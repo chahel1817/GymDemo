@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+:root {
+  --brand-bg: #08090b;
+  --brand-elevated: #0f1115;
+  --brand-card: #14171d;
+  --brand-accent: #c8ff00;
+  --brand-accent-hover: #d9ff4d;
+  --brand-accent-ink: #08090b;
+  --brand-text: #f5f6f8;
+  --brand-muted: #9aa1ae;
+  --brand-border: rgba(255, 255, 255, 0.1);
+}
+
+@theme inline {
+  --color-bg-primary: var(--brand-bg);
+  --color-bg-elevated: var(--brand-elevated);
+  --color-bg-card: var(--brand-card);
+  --color-accent: var(--brand-accent);
+  --color-accent-hover: var(--brand-accent-hover);
+  --color-accent-ink: var(--brand-accent-ink);
+  --color-text-primary: var(--brand-text);
+  --color-text-muted: var(--brand-muted);
+  --color-border-subtle: var(--brand-border);
+
+  --font-display: var(--font-barlow-condensed), "Arial Narrow", sans-serif;
+  --font-sans: var(--font-jakarta), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--brand-bg);
+  color: var(--brand-text);
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background-color: var(--brand-bg);
+  color: var(--brand-text);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: var(--brand-accent);
+  color: var(--brand-accent-ink);
+}
+
+/* Crisp accessible keyboard focus ring across dark & light controls */
+:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+
+/* Offset anchor jumps beneath sticky header */
+section[id],
+footer[id] {
+  scroll-margin-top: 5rem;
+}
+
+/* Subtle architectural noise-free hairline grid pattern for editorial dividers */
+.bg-architectural-grid {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* Dark theme native date picker icon visibility */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.9);
+  cursor: pointer;
+}
