@@ -1,9 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Dumbbell, Users, Zap } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { siteConfig } from "@/data/site";
+
+const heroMicroPillars = [
+  { label: "Expert Coaching", icon: Dumbbell },
+  { label: "Modern Equipment", icon: Zap },
+  { label: "Personalised Training", icon: Users },
+];
 
 export function Hero() {
   const prefersReducedMotion = useReducedMotion();
@@ -12,75 +18,76 @@ export function Hero() {
     <section
       id="home"
       aria-label="Hero"
-      className="relative flex min-h-[100svh] items-end overflow-hidden bg-[var(--brand-bg)] pt-24 pb-12 sm:pb-16 lg:items-center lg:pt-20 lg:pb-12"
+      className="relative overflow-hidden bg-[var(--brand-bg)] pt-20 lg:flex lg:min-h-[min(100svh,880px)] lg:items-center lg:pt-20"
     >
-      {/* Desktop Dominant Right-Stage Photography (unobstructed athlete) */}
-      <div className="pointer-events-none absolute inset-0 lg:left-[28%]">
-        {/* Mobile & Tablet framing */}
+      {/* DESKTOP: Athlete positioned prominently on the RIGHT half */}
+      <div className="pointer-events-none hidden lg:block lg:absolute lg:inset-y-0 lg:right-0 lg:w-[60%] xl:w-[57%]">
         <Image
           src={siteConfig.hero.image.src}
           alt={siteConfig.hero.image.alt}
           fill
           priority
-          quality={85}
-          sizes="(max-width: 1024px) 100vw, 72vw"
-          style={{ objectPosition: siteConfig.hero.image.objectPositionMobile }}
-          className="object-cover lg:hidden"
-        />
-        {/* Desktop framing */}
-        <Image
-          src={siteConfig.hero.image.src}
-          alt={siteConfig.hero.image.alt}
-          fill
-          priority
-          quality={85}
-          sizes="72vw"
+          quality={90}
+          sizes="(min-width: 1280px) 58vw, 60vw"
           style={{ objectPosition: siteConfig.hero.image.objectPositionDesktop }}
-          className="hidden object-cover lg:block"
+          className="object-cover"
         />
-
-        {/* Smooth edge vignettes keeping athlete bright & clear */}
+        {/* Subtle top seam feather under transparent navbar */}
         <div
-          className="absolute inset-0 bg-gradient-to-t from-[#090B09] via-[#090B09]/70 via-42% to-[#090B09]/25 lg:hidden"
+          className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#090B09] to-transparent"
           aria-hidden="true"
         />
+        {/* Subtle left gradient edge fading naturally into dark left column without dimming athlete */}
         <div
-          className="hidden lg:block lg:absolute lg:inset-0 lg:bg-gradient-to-r lg:from-[#090B09] lg:via-[#090B09]/45 lg:via-32% lg:to-transparent"
+          className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-[#090B09] via-[#090B09]/70 to-transparent"
           aria-hidden="true"
         />
+        {/* Subtle bottom fade into brand ticker */}
         <div
-          className="hidden lg:block lg:absolute lg:inset-0 lg:bg-gradient-to-t lg:from-[#090B09]/90 lg:via-transparent lg:to-[#090B09]/35"
+          className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#090B09] via-[#090B09]/40 to-transparent"
           aria-hidden="true"
         />
       </div>
 
-      {/* Editorial Left / Lower Typography */}
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="max-w-xl lg:max-w-2xl">
-          <motion.p
-            initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
+      {/* Left Editorial Content Column (Desktop & Mobile Top) */}
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 pb-3 sm:px-6 lg:px-8 lg:py-16">
+        <div className="max-w-lg lg:max-w-xl">
+          {/* Eyebrow */}
+          <motion.div
+            initial={prefersReducedMotion ? false : { opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-4 font-mono text-[11px] tracking-[0.22em] text-[var(--brand-accent)] uppercase"
+            className="mb-3 flex items-center gap-3 lg:mb-4"
           >
-            {siteConfig.hero.eyebrow}
-          </motion.p>
+            <span
+              className="inline-block h-[2px] w-7 bg-[var(--brand-accent)]"
+              aria-hidden="true"
+            />
+            <span className="font-mono text-[11px] font-medium tracking-[0.22em] text-[#F5F5F0]/80 uppercase">
+              {siteConfig.hero.eyebrow}
+            </span>
+          </motion.div>
 
-          <h1 className="font-display text-[clamp(4.1rem,15vw,8.75rem)] leading-[0.86] tracking-[0.015em] text-[var(--brand-text)] uppercase">
-            <span className="block">{siteConfig.hero.headlineLine1}</span>
+          {/* Monumental Italicised Athletic Headline */}
+          <h1 className="font-display text-[clamp(3.75rem,13.5vw,7.75rem)] leading-[0.86] tracking-[0.015em] italic uppercase">
+            <span className="block text-[var(--brand-text)]">
+              {siteConfig.hero.headlineLine1}
+            </span>
             <span className="block text-[var(--brand-accent)]">
               {siteConfig.hero.headlineLine2}
             </span>
           </h1>
 
-          <p className="mt-5 max-w-md text-base font-medium text-[#F5F5F0]/85 sm:text-lg">
+          {/* Concise Supporting Copy */}
+          <p className="mt-3.5 max-w-sm text-sm leading-relaxed text-[#F5F5F0]/80 sm:mt-4 sm:text-base lg:mt-5 lg:text-lg">
             {siteConfig.hero.supportingText}
           </p>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+          {/* Dual Pill CTAs */}
+          <div className="mt-5 flex flex-col gap-2.5 sm:mt-6 sm:flex-row sm:items-center sm:gap-4 lg:mt-7">
             <a
               href={siteConfig.hero.primaryCtaHref}
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[var(--brand-accent)] px-7 py-3.5 text-xs font-bold tracking-[0.1em] text-[var(--brand-accent-ink)] uppercase transition-all duration-200 hover:bg-[var(--brand-accent-hover)]"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[var(--brand-accent)] px-6 py-2.5 text-xs font-bold tracking-[0.06em] text-[var(--brand-accent-ink)] transition-colors hover:bg-[var(--brand-accent-hover)] sm:min-h-12 sm:px-7 sm:py-3"
             >
               <span>{siteConfig.hero.primaryCtaLabel}</span>
               <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
@@ -88,13 +95,55 @@ export function Hero() {
 
             <a
               href={siteConfig.hero.secondaryCtaHref}
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[#F5F5F0]/25 bg-[#090B09]/55 px-7 py-3.5 text-xs font-semibold tracking-[0.1em] text-[var(--brand-text)] uppercase backdrop-blur-sm transition-colors hover:border-[var(--brand-accent)] hover:text-[var(--brand-accent)]"
+              className="inline-flex min-h-11 items-center justify-center rounded-full border border-[#F5F5F0]/30 bg-[#090B09]/60 px-6 py-2.5 text-xs font-semibold tracking-[0.06em] text-[var(--brand-text)] backdrop-blur-sm transition-colors hover:border-[var(--brand-accent)] hover:text-[var(--brand-accent)] sm:min-h-12 sm:px-7 sm:py-3"
             >
-              <span>{siteConfig.hero.secondaryCtaLabel}</span>
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              {siteConfig.hero.secondaryCtaLabel}
             </a>
           </div>
+
+          {/* Minimal Bottom-Left Pillars Strip */}
+          <ul
+            aria-label="Core club highlights"
+            className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-[#F5F5F0]/10 pt-4 sm:mt-8 sm:gap-x-7 sm:pt-5 lg:mt-14 lg:pt-6"
+          >
+            {heroMicroPillars.map((item) => {
+              const Icon = item.icon;
+              return (
+                <li key={item.label} className="flex items-center gap-2">
+                  <Icon
+                    className="h-3.5 w-3.5 shrink-0 text-[var(--brand-accent)] sm:h-4 sm:w-4"
+                    aria-hidden="true"
+                  />
+                  <span className="text-[11px] font-medium text-[#F5F5F0]/80 sm:text-xs">
+                    {item.label}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
         </div>
+      </div>
+
+      {/* MOBILE / TABLET: Athlete positioned cleanly BELOW headline & CTAs preserving full head, hands & lime lighting */}
+      <div className="relative aspect-[1312/1199] w-full overflow-hidden lg:hidden">
+        <Image
+          src={siteConfig.hero.image.src}
+          alt={siteConfig.hero.image.alt}
+          fill
+          priority
+          quality={90}
+          sizes="100vw"
+          style={{ objectPosition: siteConfig.hero.image.objectPositionMobile }}
+          className="object-cover"
+        />
+        <div
+          className="absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-[#090B09] to-transparent"
+          aria-hidden="true"
+        />
+        <div
+          className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#090B09] to-transparent"
+          aria-hidden="true"
+        />
       </div>
     </section>
   );

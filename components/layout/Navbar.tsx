@@ -57,52 +57,59 @@ export function Navbar() {
         Skip to main content
       </a>
 
-      <header className="fixed inset-x-0 top-0 z-40 px-3 pt-3 sm:px-6 sm:pt-4">
-        <div
-          className={cn(
-            "mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 rounded-full border px-4 transition-all duration-300 sm:px-5",
-            scrolled
-              ? "border-[#F5F5F0]/15 bg-[#090B09]/88 shadow-2xl shadow-black/60 backdrop-blur-xl"
-              : "border-[#F5F5F0]/10 bg-[#090B09]/65 backdrop-blur-md",
-          )}
-        >
-          {/* Logo */}
+      <header
+        className={cn(
+          "fixed inset-x-0 top-0 z-40 transition-all duration-300",
+          scrolled
+            ? "border-b border-[#F5F5F0]/10 bg-[#090B09]/90 backdrop-blur-xl"
+            : "border-b border-transparent bg-gradient-to-b from-[#090B09]/90 via-[#090B09]/40 to-transparent",
+        )}
+      >
+        <div className="mx-auto flex h-18 max-w-7xl items-center justify-between gap-4 px-4 sm:h-20 sm:px-6 lg:px-8">
+          {/* Logo: FORGE / ATHLETICS */}
           <a
             href="#home"
             aria-label={`${siteConfig.brand.name} — Home`}
-            className="group flex items-center gap-2.5 focus-visible:outline-2 focus-visible:outline-[var(--brand-accent)]"
+            className="group flex items-baseline gap-2 focus-visible:outline-2 focus-visible:outline-[var(--brand-accent)]"
           >
             {siteConfig.brand.logoImageSrc ? (
               <Image
                 src={siteConfig.brand.logoImageSrc}
                 alt={siteConfig.brand.name}
-                width={28}
-                height={28}
-                className="h-7 w-7 object-contain"
+                width={32}
+                height={32}
+                className="h-8 w-8 object-contain"
               />
-            ) : (
-              <span
-                className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--brand-accent)] font-display text-lg leading-none text-[var(--brand-accent-ink)]"
-                aria-hidden="true"
-              >
-                {siteConfig.brand.shortName.charAt(0)}
-              </span>
-            )}
-            <span className="font-display text-2xl tracking-[0.06em] text-[var(--brand-text)] uppercase">
-              {siteConfig.brand.shortName}
+            ) : null}
+            <span className="font-display text-3xl tracking-[0.04em] italic text-[var(--brand-text)] uppercase">
+              {siteConfig.brand.wordmarkPrimary}
+            </span>
+            <span
+              className="font-display text-3xl text-[var(--brand-accent)]"
+              aria-hidden="true"
+            >
+              /
+            </span>
+            <span className="text-[11px] font-medium tracking-[0.28em] text-[#F5F5F0]/80 uppercase">
+              {siteConfig.brand.wordmarkSecondary}
             </span>
           </a>
 
           {/* Desktop Navigation Links */}
           <nav
             aria-label="Primary navigation"
-            className="hidden items-center gap-7 lg:flex"
+            className="hidden items-center gap-8 lg:flex"
           >
-            {siteConfig.navigation.links.map((link) => (
+            {siteConfig.navigation.links.map((link, idx) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="text-xs font-medium tracking-[0.08em] text-[#F5F5F0]/75 uppercase transition-colors hover:text-[var(--brand-accent)]"
+                className={cn(
+                  "relative py-2 text-sm font-medium transition-colors hover:text-[var(--brand-accent)]",
+                  idx === 0
+                    ? "text-[var(--brand-text)] after:absolute after:right-0 after:bottom-0 after:left-0 after:h-[2px] after:bg-[var(--brand-accent)]"
+                    : "text-[#F5F5F0]/75",
+                )}
               >
                 {link.label}
               </a>
@@ -110,10 +117,10 @@ export function Navbar() {
           </nav>
 
           {/* Right CTA + Mobile Trigger */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <a
               href={siteConfig.navigation.ctaHref}
-              className="hidden min-h-10 items-center gap-1.5 rounded-full bg-[var(--brand-accent)] px-4 py-2 text-xs font-bold tracking-[0.06em] text-[var(--brand-accent-ink)] uppercase transition-colors hover:bg-[var(--brand-accent-hover)] sm:inline-flex"
+              className="hidden min-h-11 items-center gap-1.5 rounded-full bg-[var(--brand-accent)] px-5 py-2.5 text-xs font-bold tracking-[0.04em] text-[var(--brand-accent-ink)] transition-colors hover:bg-[var(--brand-accent-hover)] sm:inline-flex"
             >
               <span>{siteConfig.navigation.ctaLabel}</span>
               <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -126,19 +133,19 @@ export function Navbar() {
               aria-controls="mobile-navigation-drawer"
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
               onClick={() => setMobileOpen((prev) => !prev)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#F5F5F0]/15 bg-[#111411] text-[var(--brand-text)] transition-colors hover:border-[var(--brand-accent)] hover:text-[var(--brand-accent)] lg:hidden cursor-pointer"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#F5F5F0]/15 bg-[#111411] text-[var(--brand-text)] transition-colors hover:border-[var(--brand-accent)] hover:text-[var(--brand-accent)] lg:hidden cursor-pointer"
             >
               {mobileOpen ? (
-                <X className="h-4 w-4" aria-hidden="true" />
+                <X className="h-5 w-5" aria-hidden="true" />
               ) : (
-                <Menu className="h-4 w-4" aria-hidden="true" />
+                <Menu className="h-5 w-5" aria-hidden="true" />
               )}
             </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile Full-Screen Slide Drawer */}
+      {/* Mobile Full-Screen Navigation Overlay */}
       <AnimatePresence>
         {mobileOpen ? (
           <motion.div
@@ -153,8 +160,12 @@ export function Navbar() {
             className="fixed inset-0 z-50 flex flex-col justify-between bg-[#090B09]/98 p-6 backdrop-blur-xl lg:hidden"
           >
             <div className="flex items-center justify-between">
-              <span className="font-display text-2xl tracking-[0.08em] text-[var(--brand-text)] uppercase">
-                {siteConfig.brand.name}
+              <span className="font-display text-2xl tracking-[0.06em] italic text-[var(--brand-text)] uppercase">
+                {siteConfig.brand.wordmarkPrimary}{" "}
+                <span className="not-italic text-[var(--brand-accent)]">/</span>{" "}
+                <span className="not-italic text-sm tracking-[0.22em]">
+                  {siteConfig.brand.wordmarkSecondary}
+                </span>
               </span>
               <button
                 ref={closeBtnRef}
@@ -193,7 +204,7 @@ export function Navbar() {
               <a
                 href={siteConfig.navigation.ctaHref}
                 onClick={() => setMobileOpen(false)}
-                className="flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[var(--brand-accent)] px-6 py-3.5 text-xs font-bold tracking-[0.1em] text-[var(--brand-accent-ink)] uppercase"
+                className="flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[var(--brand-accent)] px-6 py-3.5 text-xs font-bold tracking-[0.08em] text-[var(--brand-accent-ink)] uppercase"
               >
                 <span>{siteConfig.navigation.ctaLabel}</span>
                 <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
