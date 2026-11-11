@@ -1,10 +1,8 @@
 export interface TrainerProfile {
   id: string;
   name: string;
-  role: string;
   specialisation: string;
-  bio: string;
-  focusAreas: string[];
+  summary: string;
   isSampleProfile: boolean;
   image: {
     src: string;
@@ -14,21 +12,18 @@ export interface TrainerProfile {
 }
 
 export const trainersMeta = {
-  eyebrow: "03 // COACHING TEAM",
-  heading: "GUIDED BY DISCIPLINED COACHES.",
-  demoBadge: "SAMPLE DEMO ROSTER — REPLACE WITH YOUR REAL TRAINERS",
-  subheading:
-    "Illustrative coach profiles showing how your real training team, specialties, and coaching focus appear once onboarded.",
+  eyebrow: "04 // COACHING TEAM",
+  heading: "LED BY COACHES.",
+  demoBadge: "Sample Demo Profiles",
 };
 
 export const trainersData: TrainerProfile[] = [
   {
     id: "aarav-mehta",
     name: "Aarav Mehta",
-    role: "Lead Strength Coach (Sample Profile)",
     specialisation: "Barbell Strength & Hypertrophy",
-    bio: "Fictional demo profile illustrating your head strength coach. Focuses on foundational compound lifts, structured hypertrophy blocks, and building confident movement mechanics for beginners and lifters alike.",
-    focusAreas: ["Compound Lifts", "Hypertrophy", "Movement Screening"],
+    summary:
+      "Focuses on foundational compound lifts and progressive hypertrophy blocks for lifters at every stage.",
     isSampleProfile: true,
     image: {
       src: "/images/pexels-rdne-8612491.jpg",
@@ -39,30 +34,27 @@ export const trainersData: TrainerProfile[] = [
   {
     id: "vikram-desai",
     name: "Vikram Desai",
-    role: "Performance & Technique Coach (Sample Profile)",
-    specialisation: "Functional Strength & Mobility",
-    bio: "Fictional demo profile illustrating a technical movement specialist. Emphasises joint control, barbell efficiency, and progressive conditioning tailored to working professionals.",
-    focusAreas: ["Functional Turf", "Mobility Prep", "1-on-1 Coaching"],
+    specialisation: "Movement & Biomechanics",
+    summary:
+      "Coaches joint mobility, clean barbell technique, and sustainable strength for busy schedules.",
     isSampleProfile: true,
     image: {
       src: "/images/pexels-silverkblack-39219663.jpg",
-      alt: "Sample portrait of performance coach in front of steel power racks",
+      alt: "Sample portrait of movement coach in front of steel power racks",
       objectPosition: "50% 16%",
     },
   },
   {
     id: "kabir-shah",
     name: "Kabir Shah",
-    role: "Conditioning Specialist (Sample Profile)",
-    specialisation: "Metabolic Conditioning & Endurance",
-    bio: "Fictional demo profile illustrating an athletic conditioning coach. Designs high-output interval sessions, combat-inspired cardio circuits, and sustainable fat-loss training blocks.",
-    focusAreas: ["Engine Work", "Group Conditioning", "Athletic Stamina"],
+    specialisation: "Metabolic Conditioning",
+    summary:
+      "Designs high-output interval engines, turf circuits, and athletic stamina progressions.",
     isSampleProfile: true,
     image: {
       src: "/images/pexels-thisisengineering-3912516.jpg",
-      alt: "Sample portrait of conditioning coach leaning on boxing ring ropes inside a studio",
+      alt: "Sample portrait of conditioning coach standing by boxing ring ropes",
       objectPosition: "50% 18%",
     },
   },
 ];
-

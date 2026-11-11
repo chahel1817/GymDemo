@@ -19,14 +19,14 @@ export function Accordion({ items }: AccordionProps) {
   };
 
   return (
-    <div className="divide-y divide-white/10 border-y border-white/10">
+    <div className="divide-y divide-[#F5F5F0]/10 border-y border-[#F5F5F0]/10">
       {items.map((item, idx) => {
         const isOpen = openId === item.id;
         const panelId = `faq-panel-${item.id}`;
         const buttonId = `faq-button-${item.id}`;
 
         return (
-          <div key={item.id} className="group">
+          <div key={item.id}>
             <h3>
               <button
                 id={buttonId}
@@ -34,16 +34,18 @@ export function Accordion({ items }: AccordionProps) {
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => toggle(item.id)}
-                className="flex min-h-14 w-full items-center justify-between gap-4 py-5 text-left transition-colors hover:text-[var(--brand-accent)] cursor-pointer"
+                className="flex min-h-14 w-full items-center justify-between gap-4 py-4 text-left transition-colors hover:text-[var(--brand-accent)] cursor-pointer"
               >
-                <span className="flex items-baseline gap-4 pr-2">
-                  <span className="font-mono text-xs tracking-[0.18em] text-[var(--brand-accent)]">
+                <span className="flex items-baseline gap-3.5 pr-2">
+                  <span className="font-mono text-xs text-[var(--brand-accent)]">
                     0{idx + 1}
                   </span>
                   <span
                     className={cn(
-                      "text-base font-semibold tracking-tight transition-colors sm:text-lg",
-                      isOpen ? "text-[var(--brand-accent)]" : "text-[var(--brand-text)]",
+                      "text-sm font-semibold sm:text-base",
+                      isOpen
+                        ? "text-[var(--brand-accent)]"
+                        : "text-[var(--brand-text)]",
                     )}
                   >
                     {item.question}
@@ -52,17 +54,17 @@ export function Accordion({ items }: AccordionProps) {
 
                 <span
                   className={cn(
-                    "flex h-9 w-9 shrink-0 items-center justify-center border transition-colors",
+                    "flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors",
                     isOpen
                       ? "border-[var(--brand-accent)] bg-[var(--brand-accent)] text-[var(--brand-accent-ink)]"
-                      : "border-white/15 text-white/75 group-hover:border-white/40",
+                      : "border-[#F5F5F0]/20 text-[var(--brand-muted)]",
                   )}
                   aria-hidden="true"
                 >
                   {isOpen ? (
-                    <Minus className="h-4 w-4" />
+                    <Minus className="h-3.5 w-3.5" />
                   ) : (
-                    <Plus className="h-4 w-4" />
+                    <Plus className="h-3.5 w-3.5" />
                   )}
                 </span>
               </button>
@@ -74,22 +76,19 @@ export function Accordion({ items }: AccordionProps) {
                   id={panelId}
                   role="region"
                   aria-labelledby={buttonId}
-                  initial={prefersReducedMotion ? false : { opacity: 0, height: 0 }}
+                  initial={
+                    prefersReducedMotion ? false : { opacity: 0, height: 0 }
+                  }
                   animate={{ opacity: 1, height: "auto" }}
-                  exit={prefersReducedMotion ? undefined : { opacity: 0, height: 0 }}
-                  transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                  exit={
+                    prefersReducedMotion ? undefined : { opacity: 0, height: 0 }
+                  }
+                  transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
                   className="overflow-hidden"
                 >
-                  <div className="pb-6 pl-8 sm:pl-9">
-                    <p className="max-w-2xl text-sm leading-relaxed text-[var(--brand-muted)] sm:text-base">
-                      {item.answer}
-                    </p>
-                    {item.isDemoContent ? (
-                      <p className="mt-3 inline-block border border-white/10 bg-white/[0.03] px-2.5 py-1 font-mono text-[10px] tracking-[0.14em] text-white/60 uppercase">
-                        Editable Demo Answer — Customise in data/faq.ts
-                      </p>
-                    ) : null}
-                  </div>
+                  <p className="pb-5 pl-7 text-sm leading-relaxed text-[var(--brand-muted)]">
+                    {item.answer}
+                  </p>
                 </motion.div>
               ) : null}
             </AnimatePresence>
@@ -99,4 +98,3 @@ export function Accordion({ items }: AccordionProps) {
     </div>
   );
 }
-

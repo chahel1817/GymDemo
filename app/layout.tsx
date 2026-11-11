@@ -1,32 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import {
-  Barlow_Condensed,
-  Plus_Jakarta_Sans,
-  JetBrains_Mono,
-} from "next/font/google";
+import { Bebas_Neue, Manrope } from "next/font/google";
 import type { CSSProperties } from "react";
 import { siteConfig } from "@/data/site";
 import { MotionProvider } from "@/components/providers/MotionProvider";
 import "./globals.css";
 
-const barlowCondensed = Barlow_Condensed({
+const bebasNeue = Bebas_Neue({
   subsets: ["latin"],
-  weight: ["600", "700", "800"],
-  variable: "--font-barlow-condensed",
+  weight: "400",
+  variable: "--font-bebas-neue",
   display: "swap",
 });
 
-const plusJakarta = Plus_Jakarta_Sans({
+const manrope = Manrope({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  variable: "--font-jakarta",
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-jetbrains-mono",
+  variable: "--font-manrope",
   display: "swap",
 });
 
@@ -93,7 +82,7 @@ export default function RootLayout({
     <html
       lang="en"
       style={themeStyle}
-      className={`${barlowCondensed.variable} ${plusJakarta.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${bebasNeue.variable} ${manrope.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-[var(--brand-bg)] font-sans text-[var(--brand-text)]">
         <MotionProvider>{children}</MotionProvider>

@@ -4,13 +4,14 @@ import { EnquiryProvider } from "@/components/providers/EnquiryProvider";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/sections/Hero";
-import { TrustStrip } from "@/components/sections/TrustStrip";
-import { About } from "@/components/sections/About";
+import { BrandTicker } from "@/components/sections/BrandTicker";
+import { Philosophy } from "@/components/sections/Philosophy";
 import { Programs } from "@/components/sections/Programs";
+import { Experience } from "@/components/sections/Experience";
 import { Trainers } from "@/components/sections/Trainers";
 import { Gallery } from "@/components/sections/Gallery";
 import { Memberships } from "@/components/sections/Memberships";
-import { Testimonials } from "@/components/sections/Testimonials";
+import { ClosingCTA } from "@/components/sections/ClosingCTA";
 import { FAQ } from "@/components/sections/FAQ";
 import { Contact } from "@/components/sections/Contact";
 
@@ -68,13 +69,14 @@ export default function Home() {
           <Navbar />
           <main id="main-content" className="flex-1">
             <Hero />
-            <TrustStrip />
-            <About />
+            <BrandTicker />
+            <Philosophy />
             <Programs />
+            <Experience />
             <Trainers />
             <Gallery />
             <Memberships />
-            <Testimonials />
+            <ClosingCTA />
             <FAQ />
             <Contact />
           </main>

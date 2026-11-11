@@ -12,7 +12,7 @@ function SocialIcon({
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="1.8"
         strokeLinecap="round"
         strokeLinejoin="round"
         className="h-4 w-4"
@@ -30,7 +30,7 @@ function SocialIcon({
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="1.8"
         strokeLinecap="round"
         strokeLinejoin="round"
         className="h-4 w-4"
@@ -46,7 +46,7 @@ function SocialIcon({
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="1.8"
       strokeLinecap="round"
       strokeLinejoin="round"
       className="h-4 w-4"
@@ -59,140 +59,66 @@ function SocialIcon({
 
 export function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-[#060709]">
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
-        {/* Top Row: Brand & Back to Top */}
-        <div className="flex flex-col gap-8 border-b border-white/10 pb-12 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-xl">
-            <p className="font-mono text-[11px] tracking-[0.18em] text-[var(--brand-accent)] uppercase">
-              {siteConfig.footer.establishedLabel}
-            </p>
-            <p className="mt-3 font-display text-4xl font-bold tracking-[0.04em] text-white uppercase sm:text-5xl">
+    <footer className="border-t border-[#F5F5F0]/10 bg-[#070907]">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="font-display text-3xl tracking-[0.06em] text-[var(--brand-text)] uppercase">
               {siteConfig.brand.wordmarkPrimary}{" "}
               <span className="text-[var(--brand-accent)]">
                 {siteConfig.brand.wordmarkSecondary}
               </span>
             </p>
-            <p className="mt-4 text-sm leading-relaxed text-[var(--brand-muted)]">
+            <p className="mt-1 max-w-md text-xs text-[var(--brand-muted)]">
               {siteConfig.brand.shortStatement}
             </p>
           </div>
 
-          <a
-            href="#home"
-            className="inline-flex min-h-11 items-center gap-2.5 self-start border border-white/20 px-4 py-2.5 font-mono text-xs tracking-[0.15em] text-white uppercase transition-colors hover:border-[var(--brand-accent)] hover:text-[var(--brand-accent)] lg:self-end"
+          <nav
+            aria-label="Footer navigation"
+            className="flex flex-wrap items-center gap-x-6 gap-y-2"
           >
-            <span>BACK TO TOP</span>
-            <ArrowUp className="h-4 w-4" aria-hidden="true" />
-          </a>
-        </div>
+            {siteConfig.navigation.links.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="text-xs font-medium tracking-[0.08em] text-[var(--brand-muted)] uppercase transition-colors hover:text-[var(--brand-accent)]"
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
 
-        {/* Middle Row: Columns */}
-        <div className="grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
-          {/* Quick Navigation */}
-          <div>
-            <h2 className="font-mono text-xs font-semibold tracking-[0.18em] text-white uppercase">
-              NAVIGATION
-            </h2>
-            <ul className="mt-4 space-y-2.5">
-              {siteConfig.navigation.links.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    className="inline-flex min-h-8 items-center text-sm text-[var(--brand-muted)] transition-colors hover:text-[var(--brand-accent)]"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <div className="flex items-center gap-2.5">
+            {siteConfig.socialLinks.map((social) => (
+              <a
+                key={social.platform}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${social.label} (Placeholder)`}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#F5F5F0]/15 text-[var(--brand-muted)] transition-colors hover:border-[var(--brand-accent)] hover:text-[var(--brand-accent)]"
+              >
+                <SocialIcon platform={social.platform} />
+              </a>
+            ))}
 
-          {/* Demo Address */}
-          <div>
-            <h2 className="font-mono text-xs font-semibold tracking-[0.18em] text-white uppercase">
-              LOCATION (DEMO)
-            </h2>
-            <address className="mt-4 space-y-1.5 text-sm leading-relaxed text-[var(--brand-muted)] not-italic">
-              <p className="text-white/85">{siteConfig.contact.address.line1}</p>
-              <p>{siteConfig.contact.address.line2}</p>
-              <p>
-                {siteConfig.contact.address.city},{" "}
-                {siteConfig.contact.address.state},{" "}
-                {siteConfig.contact.address.country}
-              </p>
-            </address>
             <a
-              href={siteConfig.contact.googleMaps.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 inline-block font-mono text-[11px] tracking-[0.14em] text-[var(--brand-accent)] uppercase hover:underline"
+              href="#home"
+              aria-label="Back to top"
+              className="inline-flex h-10 items-center gap-1.5 rounded-full border border-[#F5F5F0]/20 px-4 text-xs font-semibold tracking-[0.08em] text-[var(--brand-text)] uppercase transition-colors hover:border-[var(--brand-accent)] hover:text-[var(--brand-accent)]"
             >
-              {siteConfig.contact.googleMaps.label} →
+              <span>TOP</span>
+              <ArrowUp className="h-3.5 w-3.5" aria-hidden="true" />
             </a>
           </div>
-
-          {/* Demo Hours & Contact */}
-          <div>
-            <h2 className="font-mono text-xs font-semibold tracking-[0.18em] text-white uppercase">
-              HOURS & DESK (DEMO)
-            </h2>
-            <div className="mt-4 space-y-2 text-sm text-[var(--brand-muted)]">
-              <p>
-                <span className="block text-xs text-white/60">
-                  {siteConfig.contact.openingHours.weekdaysLabel}
-                </span>
-                {siteConfig.contact.openingHours.weekdaysTime}
-              </p>
-              <p>
-                <span className="block text-xs text-white/60">
-                  {siteConfig.contact.openingHours.weekendLabel}
-                </span>
-                {siteConfig.contact.openingHours.weekendTime}
-              </p>
-              <p className="pt-2 text-white/85">
-                {siteConfig.contact.displayPhone}
-              </p>
-              <p className="text-xs">{siteConfig.contact.email}</p>
-            </div>
-          </div>
-
-          {/* Social Links */}
-          <div>
-            <h2 className="font-mono text-xs font-semibold tracking-[0.18em] text-white uppercase">
-              SOCIAL (PLACEHOLDERS)
-            </h2>
-            <p className="mt-4 text-xs leading-relaxed text-[var(--brand-muted)]">
-              Connect your official club social profiles inside{" "}
-              <code className="font-mono text-white/80">data/site.ts</code>.
-            </p>
-            <ul className="mt-4 flex flex-wrap gap-3">
-              {siteConfig.socialLinks.map((social) => (
-                <li key={social.platform}>
-                  <a
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${social.label} (Placeholder link)`}
-                    className="inline-flex h-11 items-center gap-2 border border-white/15 bg-white/[0.02] px-3.5 font-mono text-[11px] tracking-[0.12em] text-white/80 uppercase transition-colors hover:border-[var(--brand-accent)] hover:text-[var(--brand-accent)]"
-                  >
-                    <SocialIcon platform={social.platform} />
-                    <span>{social.label}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
 
-        {/* Bottom Copyright & Demo Notice */}
-        <div className="flex flex-col gap-3 border-t border-white/10 pt-8 text-xs text-[var(--brand-muted)] sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-8 flex flex-col gap-2 border-t border-[#F5F5F0]/10 pt-6 text-[11px] text-[var(--brand-muted)] sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © 2026 {siteConfig.footer.copyrightHolder}. All rights reserved.
+            © 2026 {siteConfig.footer.copyrightHolder}. {siteConfig.brand.cityLabel}.
           </p>
-          <p className="max-w-xl text-white/55">
-            {siteConfig.footer.demoNote}
-          </p>
+          <p>{siteConfig.footer.demoNote}</p>
         </div>
       </div>
     </footer>

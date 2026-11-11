@@ -8,7 +8,7 @@ interface SectionHeadingProps {
   subheading?: string;
   rightSlot?: ReactNode;
   className?: string;
-  headingAs?: "h2" | "h3";
+  size?: "md" | "lg";
 }
 
 export function SectionHeading({
@@ -18,30 +18,32 @@ export function SectionHeading({
   subheading,
   rightSlot,
   className,
-  headingAs = "h2",
+  size = "lg",
 }: SectionHeadingProps) {
-  const HeadingTag = headingAs;
-
   return (
     <div
       className={cn(
-        "flex flex-col gap-6 border-b border-white/10 pb-8 md:flex-row md:items-end md:justify-between",
+        "flex flex-col gap-5 md:flex-row md:items-end md:justify-between",
         className,
       )}
     >
-      <div className="max-w-3xl">
-        <p className="mb-3 flex items-center gap-3 font-mono text-xs font-medium tracking-[0.2em] text-[var(--brand-accent)] uppercase">
-          <span className="inline-block h-px w-6 bg-[var(--brand-accent)]" aria-hidden="true" />
+      <div className="max-w-2xl">
+        <p className="font-mono text-[11px] tracking-[0.2em] text-[var(--brand-accent)] uppercase">
           {eyebrow}
         </p>
-        <HeadingTag
+        <h2
           id={headingId}
-          className="font-display text-4xl leading-[0.95] font-bold tracking-tight text-[var(--brand-text)] uppercase sm:text-5xl lg:text-6xl"
+          className={cn(
+            "mt-2 font-display leading-[0.9] text-[var(--brand-text)] uppercase",
+            size === "lg"
+              ? "text-4xl sm:text-5xl lg:text-6xl"
+              : "text-3xl sm:text-4xl lg:text-5xl",
+          )}
         >
           {heading}
-        </HeadingTag>
+        </h2>
         {subheading ? (
-          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[var(--brand-muted)] sm:text-base">
+          <p className="mt-3 max-w-xl text-sm text-[var(--brand-muted)] sm:text-base">
             {subheading}
           </p>
         ) : null}

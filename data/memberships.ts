@@ -13,7 +13,6 @@ export interface MembershipPlan {
   name: string;
   tagline: string;
   recommended?: boolean;
-  /** Illustrative demo pricing configured centrally for each duration */
   pricing: Record<
     BillingDurationId,
     {
@@ -27,124 +26,95 @@ export interface MembershipPlan {
 }
 
 export const billingDurations: BillingDurationOption[] = [
-  {
-    id: "monthly",
-    label: "Monthly",
-    months: 1,
-  },
-  {
-    id: "quarterly",
-    label: "Quarterly",
-    months: 3,
-    badge: "SAVE 10%",
-  },
-  {
-    id: "annual",
-    label: "Annual",
-    months: 12,
-    badge: "SAVE 20%",
-  },
+  { id: "monthly", label: "Monthly", months: 1 },
+  { id: "quarterly", label: "Quarterly", months: 3, badge: "-10%" },
+  { id: "annual", label: "Annual", months: 12, badge: "-20%" },
 ];
 
 export const membershipsMeta = {
-  eyebrow: "05 // MEMBERSHIPS",
-  heading: "FLEXIBLE PLANS BUILT FOR COMMITMENT.",
-  demoNotice:
-    "ILLUSTRATIVE DEMO PRICING — ALL RATES ARE SAMPLE PLACEHOLDERS CONFIGURABLE IN DATA/MEMBERSHIPS.TS",
-  subheading:
-    "Compare access tiers across billing durations. Switch between Monthly, Quarterly, and Annual commitments to preview total illustrative pricing.",
+  eyebrow: "06 // MEMBERSHIPS",
+  heading: "CHOOSE YOUR COMMITMENT.",
+  demoNotice: "Illustrative Demo Pricing — Editable in data/memberships.ts",
 };
 
 export const membershipsData: MembershipPlan[] = [
   {
     id: "starter",
-    code: "TIER 01",
+    code: "01",
     name: "STARTER",
-    tagline: "Essential open-floor access for consistent independent training.",
+    tagline: "Full independent floor access.",
     pricing: {
-      monthly: {
-        totalPrice: 1499,
-        perMonthEquivalent: 1499,
-      },
+      monthly: { totalPrice: 1499, perMonthEquivalent: 1499 },
       quarterly: {
         totalPrice: 4047,
         perMonthEquivalent: 1349,
-        savingsLabel: "Illustrative 10% quarterly reduction",
+        savingsLabel: "10% quarterly demo rate",
       },
       annual: {
         totalPrice: 14390,
         perMonthEquivalent: 1199,
-        savingsLabel: "Illustrative 20% annual reduction",
+        savingsLabel: "20% annual demo rate",
       },
     },
     inclusions: [
-      "Full access to strength & cardio floor",
-      "Initial equipment orientation session",
-      "Locker room & shower facilities",
-      "Standard floor coach assistance",
+      "Full strength & cardio floor access",
+      "Equipment orientation session",
+      "Locker & shower access",
+      "General floor guidance",
     ],
     ctaLabel: "ENQUIRE — STARTER",
   },
   {
     id: "performance",
-    code: "TIER 02",
+    code: "02",
     name: "PERFORMANCE",
-    tagline: "Our recommended balance of floor freedom, group conditioning, and structured guidance.",
+    tagline: "Floor access + structured group conditioning.",
     recommended: true,
     pricing: {
-      monthly: {
-        totalPrice: 2499,
-        perMonthEquivalent: 2499,
-      },
+      monthly: { totalPrice: 2499, perMonthEquivalent: 2499 },
       quarterly: {
         totalPrice: 6747,
         perMonthEquivalent: 2249,
-        savingsLabel: "Illustrative 10% quarterly reduction",
+        savingsLabel: "10% quarterly demo rate",
       },
       annual: {
         totalPrice: 23990,
         perMonthEquivalent: 1999,
-        savingsLabel: "Illustrative 20% annual reduction",
+        savingsLabel: "20% annual demo rate",
       },
     },
     inclusions: [
-      "Everything in Starter membership",
-      "Scheduled small-group conditioning classes",
-      "Monthly movement & strength reassessment",
-      "Customised 4-week training template",
-      "Priority trial pass for one training partner",
+      "All Starter floor privileges",
+      "Coach-led conditioning cohorts",
+      "Monthly strength reassessment",
+      "4-week structured training split",
     ],
     ctaLabel: "ENQUIRE — PERFORMANCE",
   },
   {
     id: "elite",
-    code: "TIER 03",
+    code: "03",
     name: "ELITE",
-    tagline: "High-touch coaching architecture for dedicated transformation and accountability.",
+    tagline: "Dedicated 1-on-1 coaching & custom blocks.",
     pricing: {
-      monthly: {
-        totalPrice: 3999,
-        perMonthEquivalent: 3999,
-      },
+      monthly: { totalPrice: 3999, perMonthEquivalent: 3999 },
       quarterly: {
         totalPrice: 10797,
         perMonthEquivalent: 3599,
-        savingsLabel: "Illustrative 10% quarterly reduction",
+        savingsLabel: "10% quarterly demo rate",
       },
       annual: {
         totalPrice: 38390,
         perMonthEquivalent: 3199,
-        savingsLabel: "Illustrative 20% annual reduction",
+        savingsLabel: "20% annual demo rate",
       },
     },
     inclusions: [
-      "Everything in Performance membership",
-      "Dedicated 1-on-1 personal coaching sessions",
-      "Individualised periodised strength & cardio plan",
-      "Bi-weekly progress & body-composition check-ins",
-      "Priority booking across all studio batches",
+      "All Performance privileges",
+      "Dedicated 1-on-1 coaching sessions",
+      "Bespoke periodised programming",
+      "Bi-weekly progress check-ins",
     ],
     ctaLabel: "ENQUIRE — ELITE",
   },
 ];
-

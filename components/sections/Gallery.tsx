@@ -15,7 +15,7 @@ export function Gallery() {
     <section
       id="facilities"
       aria-labelledby="facilities-heading"
-      className="border-b border-white/10 bg-[var(--brand-bg)] py-20 sm:py-24 lg:py-28"
+      className="border-t border-[#F5F5F0]/10 bg-[var(--brand-elevated)] py-20 sm:py-28"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
@@ -23,56 +23,37 @@ export function Gallery() {
             eyebrow={galleryMeta.eyebrow}
             heading={galleryMeta.heading}
             headingId="facilities-heading"
-            subheading={galleryMeta.subheading}
+            size="md"
             rightSlot={
-              <p className="font-mono text-[11px] tracking-[0.16em] text-white/60 uppercase">
-                CLICK ANY ZONE TO ENLARGE ({galleryData.length} ZONES)
-              </p>
+              <span className="font-mono text-[11px] tracking-[0.16em] text-[var(--brand-muted)] uppercase">
+                CLICK TO INSPECT ({galleryData.length} ZONES)
+              </span>
             }
           />
         </Reveal>
 
-        {/* Asymmetric Editorial Facility Grid */}
-        <div className="mt-12 grid gap-4 md:grid-cols-12">
+        <div className="mt-10 grid gap-3 md:grid-cols-12">
           {galleryData.map((item, idx) => {
-            // Alternate asymmetry smoothly across rows:
-            // Row 1: 7 + 5 = 12
-            // Row 2: 4 + 4 + 4 = 12 (or item 5 wide at bottom? Wait: items 0..5 -> 6 items!)
-            // Let's map 6 items cleanly across 12 cols:
-            // Item 0: col-span-7 (Row 1 left)
-            // Item 1: col-span-5 (Row 1 right)
-            // Item 2: col-span-4 (Row 2 left)
-            // Item 3: col-span-4 (Row 2 mid)
-            // Item 4: col-span-4 (Row 2 right)
-            // Item 5: col-span-12 wide banner OR 5+7? Wait: 6 items -> 7+5, 4+4+4 = 5 items, or 7+5, 4+4+4, 12!
-            // Actually even cleaner editorial asymmetry for 6 items on 12 cols:
-            // Row 1: 7 + 5 = 12
-            // Row 2: 4 + 8 = 12 (or 4 + 4 + 4 = 12? No, 7+5=12, 4+4+4=12 is 5 items, so 6 items would leave 1!).
-            // Let's do: Row 1: 7 + 5 = 12; Row 2: 4 + 4 + 4 = 12? Wait: 2 + 3 = 5, 6th item can be Row 3? No, 6 items = 2+2+2 or 7+5, 5+7, 4+4+4? Wait: 7+5 (row 1), 4+8 (row 2), 6+6 (row 3) = 6 items with zero orphan gaps!!
             const layoutClass =
               idx === 0
-                ? "min-w-0 md:col-span-7 aspect-[16/10] md:aspect-auto md:h-[330px] lg:h-[400px]"
+                ? "min-w-0 md:col-span-7 aspect-[16/10] md:aspect-auto md:h-[340px] lg:h-[420px]"
                 : idx === 1
-                  ? "min-w-0 md:col-span-5 aspect-[16/10] md:aspect-auto md:h-[330px] lg:h-[400px]"
+                  ? "min-w-0 md:col-span-5 aspect-[16/10] md:aspect-auto md:h-[340px] lg:h-[420px]"
                   : idx === 2
-                    ? "min-w-0 md:col-span-4 aspect-[16/10] md:aspect-auto md:h-[290px] lg:h-[350px]"
+                    ? "min-w-0 md:col-span-4 aspect-[16/10] md:aspect-auto md:h-[280px] lg:h-[340px]"
                     : idx === 3
-                      ? "min-w-0 md:col-span-8 aspect-[16/10] md:aspect-auto md:h-[290px] lg:h-[350px]"
+                      ? "min-w-0 md:col-span-8 aspect-[16/10] md:aspect-auto md:h-[280px] lg:h-[340px]"
                       : idx === 4
-                        ? "min-w-0 md:col-span-5 aspect-[16/10] md:aspect-auto md:h-[290px] lg:h-[350px]"
-                        : "min-w-0 md:col-span-7 aspect-[16/10] md:aspect-auto md:h-[290px] lg:h-[350px]";
+                        ? "min-w-0 md:col-span-5 aspect-[16/10] md:aspect-auto md:h-[280px] lg:h-[340px]"
+                        : "min-w-0 md:col-span-7 aspect-[16/10] md:aspect-auto md:h-[280px] lg:h-[340px]";
 
             return (
-              <Reveal
-                key={item.id}
-                delay={idx * 0.04}
-                className={layoutClass}
-              >
+              <Reveal key={item.id} delay={idx * 0.03} className={layoutClass}>
                 <button
                   type="button"
                   onClick={() => setActiveIndex(idx)}
-                  aria-label={`Inspect ${item.title} in lightbox`}
-                  className="group relative flex h-full w-full overflow-hidden border border-white/10 bg-black text-left focus-visible:outline-2 focus-visible:outline-[var(--brand-accent)] cursor-pointer"
+                  aria-label={`Open ${item.title} in lightbox`}
+                  className="group relative flex h-full w-full overflow-hidden bg-black text-left focus-visible:outline-2 focus-visible:outline-[var(--brand-accent)] cursor-pointer"
                 >
                   <Image
                     src={item.src}
@@ -82,26 +63,23 @@ export function Gallery() {
                     style={{ objectPosition: item.objectPosition }}
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                   />
-
                   <div
-                    className="absolute inset-0 bg-gradient-to-t from-[#08090B]/92 via-[#08090B]/20 to-black/25 transition-opacity duration-300 group-hover:opacity-90"
+                    className="absolute inset-0 bg-gradient-to-t from-[#090B09]/85 via-transparent to-transparent opacity-80 transition-opacity group-hover:opacity-95"
                     aria-hidden="true"
                   />
 
-                  {/* Top right expand cue */}
                   <span
-                    className="absolute top-4 right-4 flex h-9 w-9 items-center justify-center border border-white/20 bg-[#08090B]/80 text-white/80 backdrop-blur-sm transition-colors group-hover:border-[var(--brand-accent)] group-hover:text-[var(--brand-accent)]"
+                    className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-[#090B09]/70 text-white/80 backdrop-blur-sm transition-colors group-hover:bg-[var(--brand-accent)] group-hover:text-[var(--brand-accent-ink)]"
                     aria-hidden="true"
                   >
-                    <Expand className="h-4 w-4" />
+                    <Expand className="h-3.5 w-3.5" />
                   </span>
 
-                  {/* Bottom caption */}
-                  <div className="relative z-10 mt-auto w-full p-5 sm:p-6">
-                    <p className="font-mono text-[10px] tracking-[0.18em] text-[var(--brand-accent)] uppercase">
+                  <div className="relative z-10 mt-auto p-5">
+                    <span className="font-mono text-[10px] tracking-[0.18em] text-[var(--brand-accent)] uppercase">
                       {item.zone}
-                    </p>
-                    <h3 className="mt-1 font-display text-2xl font-bold tracking-tight text-white uppercase sm:text-3xl">
+                    </span>
+                    <h3 className="font-display text-2xl text-[var(--brand-text)] uppercase sm:text-3xl">
                       {item.title}
                     </h3>
                   </div>

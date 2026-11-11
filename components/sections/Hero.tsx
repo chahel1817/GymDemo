@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { siteConfig } from "@/data/site";
 
@@ -11,111 +11,91 @@ export function Hero() {
   return (
     <section
       id="home"
-      aria-label="Hero showcase"
-      className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden border-b border-white/10 bg-[#08090B] pt-28 pb-12 sm:pt-32 sm:pb-16 lg:pb-20"
+      aria-label="Hero"
+      className="relative flex min-h-[100svh] items-end overflow-hidden bg-[var(--brand-bg)] pt-24 pb-12 sm:pb-16 lg:items-center lg:pt-20 lg:pb-12"
     >
-      {/* Background Cinematic Photography */}
-      <div className="absolute inset-0">
+      {/* Desktop Dominant Right-Stage Photography (unobstructed athlete) */}
+      <div className="pointer-events-none absolute inset-0 lg:left-[28%]">
+        {/* Mobile & Tablet framing */}
         <Image
-          src={siteConfig.hero.backgroundImage.src}
-          alt={siteConfig.hero.backgroundImage.alt}
+          src={siteConfig.hero.image.src}
+          alt={siteConfig.hero.image.alt}
           fill
           priority
           quality={85}
-          sizes="100vw"
-          style={{ objectPosition: siteConfig.hero.backgroundImage.objectPosition }}
-          className="object-cover"
+          sizes="(max-width: 1024px) 100vw, 72vw"
+          style={{ objectPosition: siteConfig.hero.image.objectPositionMobile }}
+          className="object-cover lg:hidden"
         />
-        {/* Deliberate Dual-Axis Editorial Overlay for High Contrast */}
+        {/* Desktop framing */}
+        <Image
+          src={siteConfig.hero.image.src}
+          alt={siteConfig.hero.image.alt}
+          fill
+          priority
+          quality={85}
+          sizes="72vw"
+          style={{ objectPosition: siteConfig.hero.image.objectPositionDesktop }}
+          className="hidden object-cover lg:block"
+        />
+
+        {/* Smooth edge vignettes keeping athlete bright & clear */}
         <div
-          className="absolute inset-0 bg-gradient-to-r from-[#08090B]/92 via-[#08090B]/52 to-[#08090B]/15"
+          className="absolute inset-0 bg-gradient-to-t from-[#090B09] via-[#090B09]/70 via-42% to-[#090B09]/25 lg:hidden"
           aria-hidden="true"
         />
         <div
-          className="absolute inset-0 bg-gradient-to-t from-[#08090B] via-[#08090B]/20 to-[#08090B]/40"
+          className="hidden lg:block lg:absolute lg:inset-0 lg:bg-gradient-to-r lg:from-[#090B09] lg:via-[#090B09]/45 lg:via-32% lg:to-transparent"
+          aria-hidden="true"
+        />
+        <div
+          className="hidden lg:block lg:absolute lg:inset-0 lg:bg-gradient-to-t lg:from-[#090B09]/90 lg:via-transparent lg:to-[#090B09]/35"
           aria-hidden="true"
         />
       </div>
 
-      {/* Main Content Container */}
+      {/* Editorial Left / Lower Typography */}
       <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl">
-          {/* Eyebrow + Architectural Rule */}
-          <motion.div
-            initial={prefersReducedMotion ? false : { opacity: 0, x: -12 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-5 flex flex-wrap items-center gap-3"
+        <div className="max-w-xl lg:max-w-2xl">
+          <motion.p
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-4 font-mono text-[11px] tracking-[0.22em] text-[var(--brand-accent)] uppercase"
           >
-            <span
-              className="inline-block h-px w-8 bg-[var(--brand-accent)]"
-              aria-hidden="true"
-            />
-            <span className="font-mono text-[11px] font-medium tracking-[0.2em] text-[var(--brand-accent)] uppercase sm:text-xs">
-              {siteConfig.hero.eyebrow}
-            </span>
-          </motion.div>
+            {siteConfig.hero.eyebrow}
+          </motion.p>
 
-          {/* Monumental Editorial H1 — never opacity: 0 on first paint for instant LCP */}
-          <h1 className="font-display text-[clamp(2.45rem,7.2vw,6.15rem)] leading-[0.9] font-extrabold tracking-[-0.015em] text-white uppercase">
+          <h1 className="font-display text-[clamp(4.1rem,15vw,8.75rem)] leading-[0.86] tracking-[0.015em] text-[var(--brand-text)] uppercase">
             <span className="block">{siteConfig.hero.headlineLine1}</span>
-            <span className="mt-1 block text-[var(--brand-accent)]">
+            <span className="block text-[var(--brand-accent)]">
               {siteConfig.hero.headlineLine2}
             </span>
           </h1>
 
-          {/* Supporting Copy */}
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 sm:text-lg lg:text-xl">
+          <p className="mt-5 max-w-md text-base font-medium text-[#F5F5F0]/85 sm:text-lg">
             {siteConfig.hero.supportingText}
           </p>
 
-          {/* Primary & Secondary CTAs */}
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
             <a
               href={siteConfig.hero.primaryCtaHref}
-              className="inline-flex min-h-12 items-center justify-center gap-2.5 border border-[var(--brand-accent)] bg-[var(--brand-accent)] px-7 py-3.5 font-mono text-xs font-semibold tracking-[0.15em] text-[var(--brand-accent-ink)] uppercase transition-all duration-200 hover:bg-[var(--brand-accent-hover)] sm:text-sm"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[var(--brand-accent)] px-7 py-3.5 text-xs font-bold tracking-[0.1em] text-[var(--brand-accent-ink)] uppercase transition-all duration-200 hover:bg-[var(--brand-accent-hover)]"
             >
               <span>{siteConfig.hero.primaryCtaLabel}</span>
-              <ArrowDownRight className="h-4 w-4" aria-hidden="true" />
+              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
             </a>
 
             <a
               href={siteConfig.hero.secondaryCtaHref}
-              className="inline-flex min-h-12 items-center justify-center gap-2.5 border border-white/30 bg-[#08090B]/55 px-7 py-3.5 font-mono text-xs font-semibold tracking-[0.15em] text-white uppercase backdrop-blur-sm transition-all duration-200 hover:border-[var(--brand-accent)] hover:text-[var(--brand-accent)] sm:text-sm"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[#F5F5F0]/25 bg-[#090B09]/55 px-7 py-3.5 text-xs font-semibold tracking-[0.1em] text-[var(--brand-text)] uppercase backdrop-blur-sm transition-colors hover:border-[var(--brand-accent)] hover:text-[var(--brand-accent)]"
             >
               <span>{siteConfig.hero.secondaryCtaLabel}</span>
-              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </a>
           </div>
-        </div>
-
-        {/* Bottom Metadata Rail */}
-        <div className="mt-12 flex flex-col gap-4 border-t border-white/15 pt-6 sm:mt-16 sm:flex-row sm:items-center sm:justify-between">
-          <div
-            className="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[11px] tracking-[0.22em] text-white/80 uppercase sm:text-xs"
-            aria-label="Core club pillars"
-          >
-            {siteConfig.brand.metadataTags.map((tag, idx) => (
-              <span key={tag} className="inline-flex items-center gap-4">
-                <span>{tag}</span>
-                {idx < siteConfig.brand.metadataTags.length - 1 ? (
-                  <span
-                    className="text-[var(--brand-accent)]"
-                    aria-hidden="true"
-                  >
-                    /
-                  </span>
-                ) : null}
-              </span>
-            ))}
-          </div>
-
-          <p className="font-mono text-[11px] tracking-[0.18em] text-white/60 uppercase">
-            {siteConfig.brand.cityLabel}
-          </p>
         </div>
       </div>
     </section>
   );
 }
-

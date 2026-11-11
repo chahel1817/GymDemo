@@ -1,100 +1,148 @@
 "use client";
 
 import { useState } from "react";
-import {
-  programCategories,
-  programsData,
-  type ProgramCategory,
-} from "@/data/programs";
+import Image from "next/image";
+import { ArrowUpRight, ChevronDown } from "lucide-react";
+import { programsData, programsMeta } from "@/data/programs";
+import { useEnquirySelection } from "@/components/providers/EnquiryProvider";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { ProgramCard } from "@/components/ui/ProgramCard";
 import { Reveal } from "@/components/ui/Reveal";
 import { cn } from "@/lib/utils";
 
 export function Programs() {
-  const [activeCategory, setActiveCategory] = useState<ProgramCategory>("All");
+  const [showSecondary, setShowSecondary] = useState(true);
+  const { selectForEnquiry } = useEnquirySelection();
 
-  const filteredPrograms =
-    activeCategory === "All"
-      ? programsData
-      : programsData.filter((p) => p.category === activeCategory);
-
-  const featuredPrograms =
-    activeCategory === "All"
-      ? filteredPrograms.filter((p) => p.featured)
-      : [];
-  const gridPrograms =
-    activeCategory === "All"
-      ? filteredPrograms.filter((p) => !p.featured)
-      : filteredPrograms;
+  const primaryPrograms = programsData.filter((p) => p.tier === "primary");
+  const secondaryPrograms = programsData.filter((p) => p.tier === "secondary");
 
   return (
     <section
       id="programs"
       aria-labelledby="programs-heading"
-      className="border-b border-white/10 bg-[var(--brand-bg)] py-20 sm:py-24 lg:py-28"
+      className="bg-[var(--brand-bg)] py-20 sm:py-28"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
           <SectionHeading
-            eyebrow="02 // TRAINING PROGRAMS"
-            heading="STRUCTURED TRACKS FOR MEASURABLE OUTPUT."
+            eyebrow={programsMeta.eyebrow}
+            heading={programsMeta.heading}
             headingId="programs-heading"
-            subheading="Choose your primary training discipline—or combine open strength work with coach-led conditioning sessions."
-            rightSlot={
-              <div
-                role="tablist"
-                aria-label="Filter training programs by category"
-                className="flex flex-wrap gap-2"
-              >
-                {programCategories.map((category) => {
-                  const isActive = activeCategory === category;
-                  return (
-                    <button
-                      key={category}
-                      type="button"
-                      role="tab"
-                      aria-selected={isActive}
-                      onClick={() => setActiveCategory(category)}
-                      className={cn(
-                        "min-h-11 border px-4 py-2 font-mono text-xs tracking-[0.14em] uppercase transition-colors cursor-pointer",
-                        isActive
-                          ? "border-[var(--brand-accent)] bg-[var(--brand-accent)] font-semibold text-[var(--brand-accent-ink)]"
-                          : "border-white/15 bg-white/[0.02] text-white/75 hover:border-white/35 hover:text-white",
-                      )}
-                    >
-                      {category}
-                    </button>
-                  );
-                })}
-              </div>
-            }
           />
         </Reveal>
 
-        {/* Signature Spotlight Programs when viewing "All" */}
-        {featuredPrograms.length > 0 ? (
-          <div className="mt-12 space-y-6">
-            {featuredPrograms.map((program) => (
-              <Reveal key={program.id}>
-                <ProgramCard program={program} variant="featured" />
-              </Reveal>
-            ))}
-          </div>
-        ) : null}
-
-        {/* Editorial Multi-Column Grid */}
-        <div
-          className={cn(
-            "grid gap-6 sm:grid-cols-2",
-            activeCategory === "All" ? "mt-6 lg:grid-cols-2" : "mt-12 lg:grid-cols-2",
-          )}
-        >
-          {gridPrograms.map((program, idx) => (
+        {/* Three Major Photography-Led Program Pillars */}
+        <div className="mt-10 grid gap-5 lg:grid-cols-3">
+          {primaryPrograms.map((program, idx) => (
             <Reveal key={program.id} delay={idx * 0.05}>
-              <ProgramCard program={program} variant="editorial" />
+              <article className="group relative flex aspect-[4/4.4] flex-col justify-end overflow-hidden bg-black">
+                <Image
+                  src={program.image.src}
+                  alt={program.image.alt}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 33vw"
+                  style={{ objectPosition: program.image.objectPosition }}
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                />
+                <div
+                  className="absolute inset-0 bg-gradient-to-t from-[#090B09] via-[#090B09]/45 via-45% to-transparent"
+                  aria-hidden="true"
+                />
+
+                <div className="relative z-10 p-6 sm:p-7">
+                  <span className="font-mono text-[11px] tracking-[0.2em] text-[var(--brand-accent)]">
+                    {program.index}
+                  </span>
+                  <h3 className="mt-1 font-display text-4xl leading-none text-[var(--brand-text)] uppercase sm:text-5xl">
+                    {program.title}
+                  </h3>
+                  <p className="mt-2.5 text-sm leading-snug text-[#F5F5F0]/80">
+                    {program.summary}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      selectForEnquiry({
+                        program: program.shortLabel,
+                        note: `Interested in ${program.shortLabel} trial session.`,
+                      })
+                    }
+                    className="mt-5 inline-flex min-h-10 items-center gap-1.5 text-xs font-bold tracking-[0.12em] text-[var(--brand-accent)] uppercase transition-opacity hover:opacity-80 cursor-pointer"
+                  >
+                    <span>EXPLORE TRACK</span>
+                    <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                  </button>
+                </div>
+              </article>
             </Reveal>
           ))}
+        </div>
+
+        {/* Compact Secondary Specialised Disciplines Strip */}
+        <div className="mt-10 border-t border-[#F5F5F0]/10 pt-8">
+          <div className="flex items-center justify-between gap-4">
+            <h3 className="font-mono text-xs tracking-[0.18em] text-[var(--brand-muted)] uppercase">
+              {programsMeta.secondaryHeading} ({secondaryPrograms.length})
+            </h3>
+            <button
+              type="button"
+              aria-expanded={showSecondary}
+              onClick={() => setShowSecondary((prev) => !prev)}
+              className="inline-flex min-h-9 items-center gap-1.5 font-mono text-[11px] tracking-[0.14em] text-[var(--brand-text)] uppercase hover:text-[var(--brand-accent)] cursor-pointer"
+            >
+              <span>{showSecondary ? "COLLAPSE" : "VIEW TRACKS"}</span>
+              <ChevronDown
+                className={cn(
+                  "h-3.5 w-3.5 transition-transform",
+                  showSecondary && "rotate-180",
+                )}
+                aria-hidden="true"
+              />
+            </button>
+          </div>
+
+          {showSecondary ? (
+            <div className="mt-5 grid gap-4 md:grid-cols-3">
+              {secondaryPrograms.map((program) => (
+                <article
+                  key={program.id}
+                  className="group flex items-center gap-4 border border-[#F5F5F0]/10 bg-[var(--brand-elevated)] p-3.5 transition-colors hover:border-[#F5F5F0]/25"
+                >
+                  <div className="relative h-20 w-24 shrink-0 overflow-hidden bg-black">
+                    <Image
+                      src={program.image.src}
+                      alt={program.image.alt}
+                      fill
+                      sizes="96px"
+                      style={{ objectPosition: program.image.objectPosition }}
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h4 className="font-display text-2xl leading-none text-[var(--brand-text)] uppercase">
+                      {program.title}
+                    </h4>
+                    <p className="mt-1 line-clamp-2 text-xs text-[var(--brand-muted)]">
+                      {program.summary}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        selectForEnquiry({
+                          program: program.shortLabel,
+                          note: `Interested in ${program.shortLabel}.`,
+                        })
+                      }
+                      className="mt-2 inline-flex items-center gap-1 font-mono text-[10px] font-semibold tracking-[0.14em] text-[var(--brand-accent)] uppercase hover:underline cursor-pointer"
+                    >
+                      <span>SELECT</span>
+                      <ArrowUpRight className="h-3 w-3" aria-hidden="true" />
+                    </button>
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : null}
         </div>
       </div>
     </section>
