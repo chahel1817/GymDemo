@@ -7,7 +7,7 @@ export function FAQ() {
     <section
       id="faq"
       aria-labelledby="faq-heading"
-      className="bg-[var(--brand-bg)] py-16 sm:py-24"
+      className="bg-[var(--brand-bg)] py-14 sm:py-20"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">

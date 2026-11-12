@@ -14,23 +14,23 @@ export function Experience() {
     >
       <div className="mx-auto grid max-w-[1600px] lg:grid-cols-12">
         {/* Left Edge-to-Edge Architectural Photo */}
-        <div className="relative min-h-[340px] bg-black sm:min-h-[440px] lg:col-span-6 lg:min-h-[580px]">
+        <div className="relative min-h-[300px] bg-black sm:min-h-[400px] lg:col-span-6 lg:min-h-[520px]">
           <Image
             src={experience.image.src}
             alt={experience.image.alt}
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
             style={{ objectPosition: experience.image.objectPosition }}
-            className="object-cover"
+            className="object-cover brightness-[1.04] contrast-[1.05]"
           />
           <div
-            className="absolute inset-0 bg-gradient-to-t from-[#111411]/70 via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-[#111411]/50"
+            className="absolute inset-0 bg-gradient-to-t from-[#111411]/70 via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-[#111411]/55"
             aria-hidden="true"
           />
         </div>
 
         {/* Right Split Content */}
-        <Reveal className="flex flex-col justify-center px-4 py-16 sm:px-10 lg:col-span-6 lg:px-16 lg:py-20">
+        <Reveal className="flex flex-col justify-center px-4 py-12 sm:px-10 sm:py-16 lg:col-span-6 lg:px-16 lg:py-20">
           <p className="font-mono text-[11px] tracking-[0.2em] text-[var(--brand-accent)] uppercase">
             {experience.eyebrow}
           </p>

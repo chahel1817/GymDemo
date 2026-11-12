@@ -9,7 +9,7 @@ export function ClosingCTA() {
   return (
     <section
       aria-labelledby="closing-cta-heading"
-      className="relative overflow-hidden border-y border-[#F5F5F0]/10 bg-[var(--brand-bg)] py-24 sm:py-32"
+      className="relative overflow-hidden border-y border-[#F5F5F0]/10 bg-[var(--brand-bg)] py-20 sm:py-28"
     >
       <Image
         src={closingCta.image.src}
@@ -17,14 +17,14 @@ export function ClosingCTA() {
         fill
         sizes="100vw"
         style={{ objectPosition: closingCta.image.objectPosition }}
-        className="object-cover"
+        className="object-cover contrast-[1.06]"
       />
       <div
-        className="absolute inset-0 bg-[#090B09]/78"
+        className="absolute inset-0 bg-[#090B09]/70"
         aria-hidden="true"
       />
       <div
-        className="absolute inset-0 bg-gradient-to-t from-[#090B09] via-transparent to-[#090B09]/85"
+        className="absolute inset-0 bg-gradient-to-t from-[#090B09] via-transparent to-[#090B09]/80"
         aria-hidden="true"
       />
 

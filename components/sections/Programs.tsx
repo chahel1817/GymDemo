@@ -20,7 +20,7 @@ export function Programs() {
     <section
       id="programs"
       aria-labelledby="programs-heading"
-      className="bg-[var(--brand-bg)] py-20 sm:py-28"
+      className="border-t border-[#F5F5F0]/8 bg-[var(--brand-bg)] py-14 sm:py-20"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
@@ -32,20 +32,20 @@ export function Programs() {
         </Reveal>
 
         {/* Three Major Photography-Led Program Pillars */}
-        <div className="mt-10 grid gap-5 lg:grid-cols-3">
+        <div className="mt-8 grid gap-5 sm:mt-10 lg:grid-cols-3">
           {primaryPrograms.map((program, idx) => (
             <Reveal key={program.id} delay={idx * 0.05}>
-              <article className="group relative flex aspect-[4/4.4] flex-col justify-end overflow-hidden bg-black">
+              <article className="group relative flex aspect-[4/4.3] flex-col justify-end overflow-hidden bg-black">
                 <Image
                   src={program.image.src}
                   alt={program.image.alt}
                   fill
                   sizes="(max-width: 1024px) 100vw, 33vw"
                   style={{ objectPosition: program.image.objectPosition }}
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                  className="object-cover brightness-[0.88] contrast-[1.06] saturate-[0.88] transition-all duration-700 ease-out group-hover:scale-[1.04] group-hover:brightness-[0.95]"
                 />
                 <div
-                  className="absolute inset-0 bg-gradient-to-t from-[#090B09] via-[#090B09]/45 via-45% to-transparent"
+                  className="absolute inset-0 bg-gradient-to-t from-[#090B09] via-[#090B09]/55 via-48% to-[#090B09]/15"
                   aria-hidden="true"
                 />
 

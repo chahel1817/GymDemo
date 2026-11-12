@@ -8,6 +8,7 @@ import {
   ArrowUpRight,
   Check,
   CheckCircle2,
+  ChevronDown,
   Copy,
   ExternalLink,
   Loader2,
@@ -50,6 +51,9 @@ interface SubmittedPayloadState {
   applicantName: string;
   atSelectionTimestamp: number;
 }
+
+const fieldControlClass =
+  "h-11 w-full rounded-[4px] border border-[#F5F5F0]/15 bg-[#090B09] px-3.5 text-sm text-[#F5F5F0] placeholder:text-[#92988F]/55 transition-colors focus:border-[var(--brand-accent)] focus:outline-none";
 
 export function EnquiryForm() {
   const { selection, clearSelection } = useEnquirySelection();
@@ -114,7 +118,6 @@ export function EnquiryForm() {
     setCopiedMessage(false);
 
     try {
-      // Optional backend API integration when configured in data/site.ts
       if (siteConfig.contact.enquiryEndpoint) {
         const res = await fetch(siteConfig.contact.enquiryEndpoint, {
           method: "POST",
@@ -137,7 +140,6 @@ export function EnquiryForm() {
 
       let popupBlocked = false;
 
-      // Only open wa.me externally when a verified non-placeholder number is configured
       if (!whatsapp.isDemoPreview && whatsapp.url && typeof window !== "undefined") {
         const openedWindow = window.open(
           whatsapp.url,
@@ -159,17 +161,17 @@ export function EnquiryForm() {
       if (whatsapp.isDemoPreview) {
         toast.info("Demo enquiry message prepared", {
           description:
-            "Placeholder WhatsApp number active — message previewed locally without sending externally.",
+            "Placeholder WhatsApp number active — previewed locally without sending.",
         });
       } else if (popupBlocked) {
         toast.success("Enquiry message prepared", {
           description:
-            "Popup blocked — use 'Open WhatsApp Message' below to send your enquiry.",
+            "Popup blocked — click 'Open WhatsApp Message' below to send.",
         });
       } else {
         toast.success("WhatsApp opened with your enquiry", {
           description:
-            "Send the pre-filled message inside WhatsApp to complete your request.",
+            "Send the prepared message inside WhatsApp to complete your request.",
         });
       }
     } catch (error) {
@@ -195,7 +197,7 @@ export function EnquiryForm() {
       setCopiedMessage(true);
       toast.success("Enquiry message copied");
     } catch {
-      toast.error("Could not copy automatically — please copy from the preview box.");
+      toast.error("Copy unavailable — please select text from the preview box.");
     }
   };
 
@@ -221,7 +223,7 @@ export function EnquiryForm() {
 
     return (
       <div
-        className="border border-[var(--brand-accent)]/35 bg-[var(--brand-elevated)] p-6 sm:p-8"
+        className="rounded-[4px] border border-[var(--brand-accent)]/35 bg-[var(--brand-elevated)] p-6 sm:p-8"
         role="status"
         aria-live="polite"
       >
@@ -243,7 +245,7 @@ export function EnquiryForm() {
             </h3>
             <p className="mt-1.5 text-sm text-[var(--brand-muted)]">
               {isDemo
-                ? "Your enquiry message is formatted below for demonstration. Because a placeholder WhatsApp number is configured, nothing was sent to a real gym."
+                ? "Your formatted enquiry is previewed below. Because a demo placeholder WhatsApp number is active, no external message was sent to a gym."
                 : submittedPayload.popupBlocked
                   ? "Your browser blocked automatic tab opening. Click below to open WhatsApp and send the prepared enquiry."
                   : "WhatsApp opened in a new tab with your prepared details. Send the message inside WhatsApp so the club desk receives your request."}
@@ -252,15 +254,12 @@ export function EnquiryForm() {
         </div>
 
         {isDemo ? (
-          <p className="mt-4 border border-[#F5F5F0]/10 bg-[#090B09] px-3.5 py-2.5 text-xs text-[var(--brand-muted)]">
-            Demo mode active (<code className="font-mono text-[#F5F5F0]">whatsappIsPlaceholder: true</code>). Replace{" "}
-            <code className="font-mono text-[#F5F5F0]">whatsappNumber</code> and set{" "}
-            <code className="font-mono text-[#F5F5F0]">whatsappIsPlaceholder: false</code> in{" "}
-            <code className="font-mono text-[#F5F5F0]">data/site.ts</code> to enable live WhatsApp dispatch.
+          <p className="mt-4 rounded-[4px] border border-[#F5F5F0]/10 bg-[#090B09] px-3.5 py-2.5 text-xs text-[var(--brand-muted)]">
+            Demo mode active (<code className="font-mono text-[#F5F5F0]">whatsappIsPlaceholder: true</code>). Configure a live WhatsApp number to enable external dispatch.
           </p>
         ) : null}
 
-        <div className="mt-4 border border-[#F5F5F0]/10 bg-[#090B09] p-4">
+        <div className="mt-4 rounded-[4px] border border-[#F5F5F0]/10 bg-[#090B09] p-4">
           <pre className="whitespace-pre-wrap font-mono text-xs leading-relaxed text-[#F5F5F0]/85">
             {submittedPayload.whatsapp.formattedMessage}
           </pre>
@@ -317,11 +316,22 @@ export function EnquiryForm() {
     <form
       onSubmit={handleSubmit(processEnquiry)}
       noValidate
-      className="border border-[#F5F5F0]/10 bg-[var(--brand-elevated)] p-6 sm:p-8"
+      className="rounded-[4px] border border-[#F5F5F0]/10 bg-[var(--brand-elevated)] p-5 sm:p-7 lg:p-8"
       aria-label="Book a free trial enquiry form"
     >
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-2 border-b border-[#F5F5F0]/10 pb-4">
+        <p className="font-mono text-[11px] tracking-[0.16em] text-[var(--brand-accent)] uppercase">
+          TRIAL VISIT FORM
+        </p>
+        <span className="font-mono text-[10px] tracking-[0.14em] text-[var(--brand-muted)] uppercase">
+          {siteConfig.contact.whatsappIsPlaceholder
+            ? "DEMO PREVIEW MODE"
+            : "WHATSAPP HANDOFF"}
+        </span>
+      </div>
+
       {selection ? (
-        <div className="mb-5 flex items-center justify-between gap-3 border border-[var(--brand-accent)]/35 bg-[var(--brand-accent)]/10 px-4 py-2.5 text-xs text-white">
+        <div className="mb-5 flex items-center justify-between gap-3 rounded-[4px] border border-[var(--brand-accent)]/35 bg-[var(--brand-accent)]/10 px-4 py-2.5 text-xs text-white">
           <div>
             <span className="font-mono text-[10px] tracking-[0.14em] text-[var(--brand-accent)] uppercase">
               SELECTED:
@@ -346,7 +356,7 @@ export function EnquiryForm() {
       {submissionError ? (
         <div
           role="alert"
-          className="mb-5 flex items-start gap-2.5 border border-red-500/40 bg-red-500/10 p-3.5 text-sm text-red-200"
+          className="mb-5 flex items-start gap-2.5 rounded-[4px] border border-red-500/40 bg-red-500/10 p-3.5 text-sm text-red-200"
         >
           <AlertCircle
             className="mt-0.5 h-4 w-4 shrink-0 text-red-400"
@@ -360,7 +370,7 @@ export function EnquiryForm() {
         <div className="sm:col-span-2">
           <label
             htmlFor="enquiry-full-name"
-            className="mb-1.5 block font-mono text-[11px] tracking-[0.14em] text-[#F5F5F0]/80 uppercase"
+            className="mb-1.5 block font-mono text-[11px] tracking-[0.14em] text-[#F5F5F0]/85 uppercase"
           >
             Full Name <span className="text-[var(--brand-accent)]">*</span>
           </label>
@@ -371,14 +381,14 @@ export function EnquiryForm() {
             placeholder="Rohan Patel"
             aria-invalid={Boolean(errors.fullName)}
             aria-describedby={errors.fullName ? "error-full-name" : undefined}
-            className="min-h-11 w-full border border-[#F5F5F0]/15 bg-[#090B09] px-3.5 py-2.5 text-sm text-white placeholder:text-white/30 focus:border-[var(--brand-accent)] focus:outline-none"
+            className={fieldControlClass}
             {...register("fullName")}
           />
           {errors.fullName ? (
             <p
               id="error-full-name"
               role="alert"
-              className="mt-1 text-xs text-red-400"
+              className="mt-1.5 text-xs text-red-400"
             >
               {errors.fullName.message}
             </p>
@@ -388,13 +398,13 @@ export function EnquiryForm() {
         <div>
           <label
             htmlFor="enquiry-phone"
-            className="mb-1.5 block font-mono text-[11px] tracking-[0.14em] text-[#F5F5F0]/80 uppercase"
+            className="mb-1.5 block font-mono text-[11px] tracking-[0.14em] text-[#F5F5F0]/85 uppercase"
           >
             Mobile (India){" "}
             <span className="text-[var(--brand-accent)]">*</span>
           </label>
           <div className="flex">
-            <span className="inline-flex min-h-11 items-center border border-r-0 border-[#F5F5F0]/15 bg-white/[0.04] px-3 font-mono text-xs text-[#F5F5F0]/75">
+            <span className="inline-flex h-11 items-center rounded-l-[4px] border border-r-0 border-[#F5F5F0]/15 bg-white/[0.04] px-3 font-mono text-xs text-[#F5F5F0]/75">
               +91
             </span>
             <input
@@ -405,7 +415,7 @@ export function EnquiryForm() {
               placeholder="98765 43210"
               aria-invalid={Boolean(errors.phone)}
               aria-describedby={errors.phone ? "error-phone" : undefined}
-              className="min-h-11 w-full border border-[#F5F5F0]/15 bg-[#090B09] px-3.5 py-2.5 text-sm text-white placeholder:text-white/30 focus:border-[var(--brand-accent)] focus:outline-none"
+              className="h-11 w-full rounded-r-[4px] border border-[#F5F5F0]/15 bg-[#090B09] px-3.5 text-sm text-[#F5F5F0] placeholder:text-[#92988F]/55 transition-colors focus:border-[var(--brand-accent)] focus:outline-none"
               {...register("phone")}
             />
           </div>
@@ -413,7 +423,7 @@ export function EnquiryForm() {
             <p
               id="error-phone"
               role="alert"
-              className="mt-1 text-xs text-red-400"
+              className="mt-1.5 text-xs text-red-400"
             >
               {errors.phone.message}
             </p>
@@ -423,9 +433,9 @@ export function EnquiryForm() {
         <div>
           <label
             htmlFor="enquiry-email"
-            className="mb-1.5 block font-mono text-[11px] tracking-[0.14em] text-[#F5F5F0]/80 uppercase"
+            className="mb-1.5 block font-mono text-[11px] tracking-[0.14em] text-[#F5F5F0]/85 uppercase"
           >
-            Email <span className="text-white/40">(Optional)</span>
+            Email <span className="text-[#92988F]">(Optional)</span>
           </label>
           <input
             id="enquiry-email"
@@ -434,14 +444,14 @@ export function EnquiryForm() {
             placeholder="name@example.com"
             aria-invalid={Boolean(errors.email)}
             aria-describedby={errors.email ? "error-email" : undefined}
-            className="min-h-11 w-full border border-[#F5F5F0]/15 bg-[#090B09] px-3.5 py-2.5 text-sm text-white placeholder:text-white/30 focus:border-[var(--brand-accent)] focus:outline-none"
+            className={fieldControlClass}
             {...register("email")}
           />
           {errors.email ? (
             <p
               id="error-email"
               role="alert"
-              className="mt-1 text-xs text-red-400"
+              className="mt-1.5 text-xs text-red-400"
             >
               {errors.email.message}
             </p>
@@ -451,30 +461,36 @@ export function EnquiryForm() {
         <div>
           <label
             htmlFor="enquiry-program"
-            className="mb-1.5 block font-mono text-[11px] tracking-[0.14em] text-[#F5F5F0]/80 uppercase"
+            className="mb-1.5 block font-mono text-[11px] tracking-[0.14em] text-[#F5F5F0]/85 uppercase"
           >
             Program <span className="text-[var(--brand-accent)]">*</span>
           </label>
-          <select
-            id="enquiry-program"
-            aria-invalid={Boolean(errors.preferredProgram)}
-            aria-describedby={
-              errors.preferredProgram ? "error-program" : undefined
-            }
-            className="min-h-11 w-full border border-[#F5F5F0]/15 bg-[#090B09] px-3.5 py-2.5 text-sm text-white focus:border-[var(--brand-accent)] focus:outline-none"
-            {...register("preferredProgram")}
-          >
-            {programOptions.map((option) => (
-              <option key={option} value={option} className="bg-[#111411]">
-                {option}
-              </option>
-            ))}
-          </select>
+          <div className="relative">
+            <select
+              id="enquiry-program"
+              aria-invalid={Boolean(errors.preferredProgram)}
+              aria-describedby={
+                errors.preferredProgram ? "error-program" : undefined
+              }
+              className={`${fieldControlClass} appearance-none pr-10 cursor-pointer`}
+              {...register("preferredProgram")}
+            >
+              {programOptions.map((option) => (
+                <option key={option} value={option} className="bg-[#111411]">
+                  {option}
+                </option>
+              ))}
+            </select>
+            <ChevronDown
+              className="pointer-events-none absolute top-1/2 right-3.5 h-4 w-4 -translate-y-1/2 text-[var(--brand-muted)]"
+              aria-hidden="true"
+            />
+          </div>
           {errors.preferredProgram ? (
             <p
               id="error-program"
               role="alert"
-              className="mt-1 text-xs text-red-400"
+              className="mt-1.5 text-xs text-red-400"
             >
               {errors.preferredProgram.message}
             </p>
@@ -484,7 +500,7 @@ export function EnquiryForm() {
         <div>
           <label
             htmlFor="enquiry-date"
-            className="mb-1.5 block font-mono text-[11px] tracking-[0.14em] text-[#F5F5F0]/80 uppercase"
+            className="mb-1.5 block font-mono text-[11px] tracking-[0.14em] text-[#F5F5F0]/85 uppercase"
           >
             Preferred Date{" "}
             <span className="text-[var(--brand-accent)]">*</span>
@@ -495,14 +511,14 @@ export function EnquiryForm() {
             min={minDate || undefined}
             aria-invalid={Boolean(errors.preferredDate)}
             aria-describedby={errors.preferredDate ? "error-date" : undefined}
-            className="min-h-11 w-full border border-[#F5F5F0]/15 bg-[#090B09] px-3.5 py-2.5 text-sm text-white focus:border-[var(--brand-accent)] focus:outline-none"
+            className={fieldControlClass}
             {...register("preferredDate")}
           />
           {errors.preferredDate ? (
             <p
               id="error-date"
               role="alert"
-              className="mt-1 text-xs text-red-400"
+              className="mt-1.5 text-xs text-red-400"
             >
               {errors.preferredDate.message}
             </p>
@@ -512,44 +528,50 @@ export function EnquiryForm() {
         <div className="sm:col-span-2">
           <label
             htmlFor="enquiry-membership"
-            className="mb-1.5 block font-mono text-[11px] tracking-[0.14em] text-[#F5F5F0]/80 uppercase"
+            className="mb-1.5 block font-mono text-[11px] tracking-[0.14em] text-[#F5F5F0]/85 uppercase"
           >
-            Membership Plan <span className="text-white/40">(Optional)</span>
+            Membership Plan <span className="text-[#92988F]">(Optional)</span>
           </label>
-          <select
-            id="enquiry-membership"
-            className="min-h-11 w-full border border-[#F5F5F0]/15 bg-[#090B09] px-3.5 py-2.5 text-sm text-white focus:border-[var(--brand-accent)] focus:outline-none"
-            {...register("membershipInterest")}
-          >
-            {membershipOptions.map((opt) => (
-              <option key={opt} value={opt} className="bg-[#111411]">
-                {opt}
-              </option>
-            ))}
-          </select>
+          <div className="relative">
+            <select
+              id="enquiry-membership"
+              className={`${fieldControlClass} appearance-none pr-10 cursor-pointer`}
+              {...register("membershipInterest")}
+            >
+              {membershipOptions.map((opt) => (
+                <option key={opt} value={opt} className="bg-[#111411]">
+                  {opt}
+                </option>
+              ))}
+            </select>
+            <ChevronDown
+              className="pointer-events-none absolute top-1/2 right-3.5 h-4 w-4 -translate-y-1/2 text-[var(--brand-muted)]"
+              aria-hidden="true"
+            />
+          </div>
         </div>
 
         <div className="sm:col-span-2">
           <label
             htmlFor="enquiry-message"
-            className="mb-1.5 block font-mono text-[11px] tracking-[0.14em] text-[#F5F5F0]/80 uppercase"
+            className="mb-1.5 block font-mono text-[11px] tracking-[0.14em] text-[#F5F5F0]/85 uppercase"
           >
-            Notes <span className="text-white/40">(Optional)</span>
+            Notes <span className="text-[#92988F]">(Optional)</span>
           </label>
           <textarea
             id="enquiry-message"
-            rows={2}
-            placeholder="Preferred morning/evening slot or goals..."
+            rows={3}
+            placeholder="Preferred morning/evening slot or training goals..."
             aria-invalid={Boolean(errors.message)}
             aria-describedby={errors.message ? "error-message" : undefined}
-            className="w-full resize-y border border-[#F5F5F0]/15 bg-[#090B09] px-3.5 py-2.5 text-sm text-white placeholder:text-white/30 focus:border-[var(--brand-accent)] focus:outline-none"
+            className="w-full resize-y rounded-[4px] border border-[#F5F5F0]/15 bg-[#090B09] px-3.5 py-2.5 text-sm text-[#F5F5F0] placeholder:text-[#92988F]/55 transition-colors focus:border-[var(--brand-accent)] focus:outline-none"
             {...register("message")}
           />
           {errors.message ? (
             <p
               id="error-message"
               role="alert"
-              className="mt-1 text-xs text-red-400"
+              className="mt-1.5 text-xs text-red-400"
             >
               {errors.message.message}
             </p>
@@ -557,17 +579,17 @@ export function EnquiryForm() {
         </div>
       </div>
 
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-6 flex flex-col gap-3 border-t border-[#F5F5F0]/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
         <span className="text-xs text-[var(--brand-muted)]">
           {siteConfig.contact.whatsappIsPlaceholder
-            ? "Demo mode · Prepares enquiry preview locally"
+            ? "Demo mode · Prepares formatted enquiry preview locally"
             : "Prepares a WhatsApp enquiry message"}
         </span>
 
         <button
           type="submit"
           disabled={busy}
-          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[var(--brand-accent)] px-7 py-3 text-xs font-bold tracking-[0.1em] text-[var(--brand-accent-ink)] uppercase transition-colors hover:bg-[var(--brand-accent-hover)] disabled:opacity-50 cursor-pointer"
+          className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[var(--brand-accent)] px-7 py-3 text-xs font-bold tracking-[0.1em] text-[var(--brand-accent-ink)] uppercase transition-colors hover:bg-[var(--brand-accent-hover)] disabled:opacity-50 sm:w-auto cursor-pointer"
         >
           {busy ? (
             <>

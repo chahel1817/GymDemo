@@ -14,7 +14,7 @@ export function Trainers() {
     <section
       id="trainers"
       aria-labelledby="trainers-heading"
-      className="bg-[var(--brand-bg)] py-20 sm:py-28"
+      className="bg-[var(--brand-bg)] py-14 sm:py-20"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
@@ -31,7 +31,7 @@ export function Trainers() {
           />
         </Reveal>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
+        <div className="mt-8 grid gap-6 sm:mt-10 md:grid-cols-3">
           {trainersData.map((trainer, idx) => (
             <Reveal key={trainer.id} delay={idx * 0.05}>
               <article className="group flex h-full flex-col justify-between">
@@ -43,7 +43,7 @@ export function Trainers() {
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
                       style={{ objectPosition: trainer.image.objectPosition }}
-                      className="object-cover brightness-[0.95] contrast-[1.06] saturate-[0.92] transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                      className="object-cover brightness-[0.92] contrast-[1.06] saturate-[0.82] transition-all duration-700 ease-out group-hover:scale-[1.03] group-hover:brightness-[0.98]"
                     />
                     <div
                       className="absolute inset-0 bg-gradient-to-t from-[#090B09]/75 via-transparent to-transparent"

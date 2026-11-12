@@ -10,10 +10,10 @@ export function Philosophy() {
     <section
       id="about"
       aria-labelledby="philosophy-heading"
-      className="bg-[var(--brand-bg)] py-20 sm:py-28"
+      className="bg-[var(--brand-bg)] py-14 sm:py-20"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-14">
+        <div className="grid items-center gap-8 lg:grid-cols-12 lg:gap-14">
           {/* Dominant Asymmetric Photograph */}
           <Reveal className="lg:col-span-7">
             <div className="relative aspect-[16/10] overflow-hidden bg-black">
@@ -23,10 +23,10 @@ export function Philosophy() {
                 fill
                 sizes="(max-width: 1024px) 100vw, 58vw"
                 style={{ objectPosition: philosophy.image.objectPosition }}
-                className="object-cover"
+                className="object-cover brightness-[1.04] contrast-[1.04]"
               />
               <div
-                className="absolute inset-0 bg-gradient-to-t from-[#090B09]/50 via-transparent to-transparent"
+                className="absolute inset-0 bg-gradient-to-t from-[#090B09]/45 via-transparent to-transparent"
                 aria-hidden="true"
               />
             </div>

@@ -15,7 +15,7 @@ export function Gallery() {
     <section
       id="facilities"
       aria-labelledby="facilities-heading"
-      className="border-t border-[#F5F5F0]/10 bg-[var(--brand-elevated)] py-20 sm:py-28"
+      className="border-t border-[#F5F5F0]/10 bg-[var(--brand-elevated)] py-14 sm:py-20"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
@@ -32,16 +32,16 @@ export function Gallery() {
           />
         </Reveal>
 
-        <div className="mt-10 grid gap-3 md:grid-cols-12">
+        <div className="mt-8 grid gap-3 sm:mt-10 md:grid-cols-12">
           {galleryData.map((item, idx) => {
             const layoutClass =
               idx === 0
-                ? "min-w-0 md:col-span-7 aspect-[16/10] md:aspect-auto md:h-[340px] lg:h-[420px]"
+                ? "min-w-0 md:col-span-7 aspect-[16/10] md:aspect-auto md:h-[340px] lg:h-[400px]"
                 : idx === 1
-                  ? "min-w-0 md:col-span-5 aspect-[16/10] md:aspect-auto md:h-[340px] lg:h-[420px]"
+                  ? "min-w-0 md:col-span-5 aspect-[16/10] md:aspect-auto md:h-[340px] lg:h-[400px]"
                   : idx === 2
-                    ? "min-w-0 md:col-span-5 aspect-[16/10] md:aspect-auto md:h-[300px] lg:h-[360px]"
-                    : "min-w-0 md:col-span-7 aspect-[16/10] md:aspect-auto md:h-[300px] lg:h-[360px]";
+                    ? "min-w-0 md:col-span-5 aspect-[16/10] md:aspect-auto md:h-[290px] lg:h-[340px]"
+                    : "min-w-0 md:col-span-7 aspect-[16/10] md:aspect-auto md:h-[290px] lg:h-[340px]";
 
             return (
               <Reveal key={item.id} delay={idx * 0.04} className={layoutClass}>
@@ -57,7 +57,7 @@ export function Gallery() {
                     fill
                     sizes="(max-width: 768px) 100vw, 55vw"
                     style={{ objectPosition: item.objectPosition }}
-                    className="object-cover brightness-[0.95] contrast-[1.04] transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                    className="object-cover brightness-[0.88] contrast-[1.08] saturate-[0.76] transition-all duration-700 ease-out group-hover:scale-[1.04] group-hover:brightness-[0.96] group-hover:saturate-[0.9]"
                   />
                   <div
                     className="absolute inset-0 bg-gradient-to-t from-[#090B09]/85 via-transparent to-transparent opacity-80 transition-opacity group-hover:opacity-95"

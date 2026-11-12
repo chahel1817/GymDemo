@@ -34,7 +34,7 @@ export const billingDurations: BillingDurationOption[] = [
 export const membershipsMeta = {
   eyebrow: "06 // MEMBERSHIPS",
   heading: "CHOOSE YOUR COMMITMENT.",
-  demoNotice: "Illustrative Demo Pricing — Editable in data/memberships.ts",
+  demoNotice: "Illustrative demo pricing — switch durations to preview sample totals.",
 };
 
 export const membershipsData: MembershipPlan[] = [

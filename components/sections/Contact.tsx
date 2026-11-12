@@ -19,7 +19,7 @@ export function Contact() {
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      className="border-t border-[#F5F5F0]/10 bg-[var(--brand-bg)] py-20 sm:py-28"
+      className="border-t border-[#F5F5F0]/10 bg-[var(--brand-bg)] py-14 sm:py-20"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
@@ -31,23 +31,28 @@ export function Contact() {
           />
         </Reveal>
 
-        <div className="mt-10 grid gap-8 lg:grid-cols-12 lg:gap-12">
+        <div className="mt-8 grid items-start gap-6 sm:mt-10 lg:grid-cols-12 lg:gap-10">
           {/* Left Compact Club Info */}
           <Reveal className="space-y-4 lg:col-span-5">
-            <div className="border border-[#F5F5F0]/10 bg-[var(--brand-elevated)] p-6">
+            <div className="rounded-[4px] border border-[#F5F5F0]/10 bg-[var(--brand-elevated)] p-6">
               <div className="flex items-center gap-2 font-mono text-[11px] tracking-[0.16em] text-[var(--brand-accent)] uppercase">
-                <MapPin className="h-4 w-4" aria-hidden="true" />
+                <MapPin className="h-4 w-4 shrink-0" aria-hidden="true" />
                 <span>{contact.address.label}</span>
               </div>
-              <address className="mt-3 space-y-0.5 text-sm text-[var(--brand-text)] not-italic">
-                <p>{contact.address.line1}</p>
+              <address className="mt-3 space-y-1 text-sm leading-relaxed text-[var(--brand-text)] not-italic">
+                <p className="font-medium">{contact.address.line1}</p>
                 <p className="text-[var(--brand-muted)]">
-                  {contact.address.line2}, {contact.address.city},{" "}
-                  {contact.address.state}
+                  {[
+                    contact.address.line2,
+                    contact.address.city,
+                    contact.address.state,
+                  ]
+                    .filter(Boolean)
+                    .join(", ")}
                 </p>
               </address>
 
-              <div className="mt-5 flex flex-wrap gap-3">
+              <div className="mt-5 flex flex-wrap items-center gap-3">
                 <button
                   type="button"
                   onClick={() => setShowMapEmbed((prev) => !prev)}
@@ -62,12 +67,12 @@ export function Contact() {
                   className="inline-flex min-h-9 items-center gap-1.5 text-[11px] font-semibold tracking-[0.1em] text-[var(--brand-accent)] uppercase hover:underline"
                 >
                   <span>{contact.googleMaps.label}</span>
-                  <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                  <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                 </a>
               </div>
 
               {showMapEmbed ? (
-                <div className="mt-4 overflow-hidden border border-[#F5F5F0]/15 bg-black">
+                <div className="mt-4 overflow-hidden rounded-[4px] border border-[#F5F5F0]/15 bg-black">
                   <iframe
                     title="Ahmedabad Demo Map Preview"
                     src={mapEmbedUrl}
@@ -80,34 +85,40 @@ export function Contact() {
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-              <div className="border border-[#F5F5F0]/10 bg-[var(--brand-elevated)] p-5">
+              <div className="rounded-[4px] border border-[#F5F5F0]/10 bg-[var(--brand-elevated)] p-5">
                 <div className="flex items-center gap-2 font-mono text-[11px] tracking-[0.15em] text-[var(--brand-accent)] uppercase">
-                  <Clock className="h-4 w-4" aria-hidden="true" />
+                  <Clock className="h-4 w-4 shrink-0" aria-hidden="true" />
                   <span>SAMPLE HOURS</span>
                 </div>
-                <p className="mt-2.5 text-sm text-[var(--brand-text)]">
-                  {contact.openingHours.weekdaysLabel}:{" "}
-                  <span className="text-[var(--brand-muted)]">
-                    {contact.openingHours.weekdaysTime}
-                  </span>
-                </p>
-                <p className="mt-1 text-sm text-[var(--brand-text)]">
-                  {contact.openingHours.weekendLabel}:{" "}
-                  <span className="text-[var(--brand-muted)]">
-                    {contact.openingHours.weekendTime}
-                  </span>
-                </p>
+                <dl className="mt-3 space-y-1.5 text-sm">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <dt className="text-[var(--brand-text)]">
+                      {contact.openingHours.weekdaysLabel}
+                    </dt>
+                    <dd className="text-right text-[var(--brand-muted)]">
+                      {contact.openingHours.weekdaysTime}
+                    </dd>
+                  </div>
+                  <div className="flex items-baseline justify-between gap-2">
+                    <dt className="text-[var(--brand-text)]">
+                      {contact.openingHours.weekendLabel}
+                    </dt>
+                    <dd className="text-right text-[var(--brand-muted)]">
+                      {contact.openingHours.weekendTime}
+                    </dd>
+                  </div>
+                </dl>
               </div>
 
-              <div className="border border-[#F5F5F0]/10 bg-[var(--brand-elevated)] p-5">
+              <div className="rounded-[4px] border border-[#F5F5F0]/10 bg-[var(--brand-elevated)] p-5">
                 <div className="flex items-center gap-2 font-mono text-[11px] tracking-[0.15em] text-[var(--brand-accent)] uppercase">
-                  <Phone className="h-4 w-4" aria-hidden="true" />
+                  <Phone className="h-4 w-4 shrink-0" aria-hidden="true" />
                   <span>DEMO CONTACT</span>
                 </div>
-                <p className="mt-2.5 text-sm text-[var(--brand-text)]">
+                <p className="mt-2.5 text-sm font-medium text-[var(--brand-text)]">
                   {contact.displayPhone}
                 </p>
-                <p className="mt-0.5 text-xs text-[var(--brand-muted)]">
+                <p className="mt-1 break-all text-xs text-[var(--brand-muted)]">
                   {contact.email}
                 </p>
               </div>

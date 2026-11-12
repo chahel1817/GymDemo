@@ -39,7 +39,7 @@ export function Hero() {
             </span>
           </motion.div>
 
-          <h1 className="font-display text-[clamp(3.75rem,13vw,7.75rem)] leading-[0.86] tracking-[0.015em] italic uppercase">
+          <h1 className="font-display text-[clamp(3.3rem,11.5vw,7.4rem)] leading-[0.86] tracking-[0.015em] italic uppercase">
             <span className="block text-[var(--brand-text)]">
               {siteConfig.hero.headlineLine1}
             </span>

@@ -230,7 +230,7 @@ export const siteConfig: SiteConfig = {
   hero: {
     eyebrow: "TRAIN / PERFORM / EVOLVE",
     headlineLine1: "EARN YOUR",
-    headlineLine2: "STRONG.",
+    headlineLine2: "STRENGTH.",
     supportingText: "Train with purpose. Build strength. Become a stronger you.",
     primaryCtaLabel: "Book a Free Trial",
     primaryCtaHref: "#contact",
@@ -305,20 +305,20 @@ export const siteConfig: SiteConfig = {
     eyebrow: "07 // FREE TRIAL",
     heading: "BOOK YOUR VISIT.",
     subheading:
-      "Prepare an introductory visit enquiry below. In demo mode, your formatted message is previewed without contacting an external phone line.",
+      "Prepare a trial visit enquiry below. Demo mode previews your formatted enquiry locally without contacting an external number.",
     whatsappNumber: "910000000000", // DEMO PLACEHOLDER — set a real 91XXXXXXXXXX number and whatsappIsPlaceholder: false for live launch
     whatsappIsPlaceholder: true,
     displayPhone: "+91 00000 00000 (Demo Placeholder)",
-    email: "demo-placeholder@forge-club.local",
+    email: "demo@forgeathletics-preview.local",
     address: {
       label: "LOCATION (DEMO PLACEHOLDER)",
-      line1: "Sample Club Area — Sindhu Bhavan Road / SG Highway",
-      line2: "Bodakdev, Ahmedabad",
+      line1: "Sindhu Bhavan Road / SG Highway (Sample Area)",
+      line2: "Bodakdev",
       city: "Ahmedabad",
       state: "Gujarat",
       country: "India",
       isPlaceholder: true,
-      note: "Illustrative Ahmedabad placeholder. Replace in data/site.ts before production launch.",
+      note: "Illustrative Ahmedabad placeholder. Replace with your verified club address before launch.",
     },
     openingHours: {
       weekdaysLabel: "Mon – Sat",
