@@ -40,15 +40,11 @@ export function Gallery() {
                 : idx === 1
                   ? "min-w-0 md:col-span-5 aspect-[16/10] md:aspect-auto md:h-[340px] lg:h-[420px]"
                   : idx === 2
-                    ? "min-w-0 md:col-span-4 aspect-[16/10] md:aspect-auto md:h-[280px] lg:h-[340px]"
-                    : idx === 3
-                      ? "min-w-0 md:col-span-8 aspect-[16/10] md:aspect-auto md:h-[280px] lg:h-[340px]"
-                      : idx === 4
-                        ? "min-w-0 md:col-span-5 aspect-[16/10] md:aspect-auto md:h-[280px] lg:h-[340px]"
-                        : "min-w-0 md:col-span-7 aspect-[16/10] md:aspect-auto md:h-[280px] lg:h-[340px]";
+                    ? "min-w-0 md:col-span-5 aspect-[16/10] md:aspect-auto md:h-[300px] lg:h-[360px]"
+                    : "min-w-0 md:col-span-7 aspect-[16/10] md:aspect-auto md:h-[300px] lg:h-[360px]";
 
             return (
-              <Reveal key={item.id} delay={idx * 0.03} className={layoutClass}>
+              <Reveal key={item.id} delay={idx * 0.04} className={layoutClass}>
                 <button
                   type="button"
                   onClick={() => setActiveIndex(idx)}
@@ -61,7 +57,7 @@ export function Gallery() {
                     fill
                     sizes="(max-width: 768px) 100vw, 55vw"
                     style={{ objectPosition: item.objectPosition }}
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                    className="object-cover brightness-[0.95] contrast-[1.04] transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                   />
                   <div
                     className="absolute inset-0 bg-gradient-to-t from-[#090B09]/85 via-transparent to-transparent opacity-80 transition-opacity group-hover:opacity-95"

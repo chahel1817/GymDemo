@@ -11,6 +11,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const prefersReducedMotion = useReducedMotion();
+  const drawerRef = useRef<HTMLDivElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const toggleBtnRef = useRef<HTMLButtonElement>(null);
 
@@ -35,8 +36,36 @@ export function Navbar() {
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
+        e.preventDefault();
         setMobileOpen(false);
         toggleBtnRef.current?.focus();
+        return;
+      }
+
+      if (e.key === "Tab" && drawerRef.current) {
+        const focusable = Array.from(
+          drawerRef.current.querySelectorAll<HTMLElement>(
+            'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+          ),
+        );
+        if (focusable.length === 0) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (!drawerRef.current.contains(document.activeElement)) {
+          e.preventDefault();
+          (e.shiftKey ? last : first).focus();
+          return;
+        }
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     };
 
@@ -61,12 +90,12 @@ export function Navbar() {
         className={cn(
           "fixed inset-x-0 top-0 z-40 transition-all duration-300",
           scrolled
-            ? "border-b border-[#F5F5F0]/10 bg-[#090B09]/90 backdrop-blur-xl"
+            ? "border-b border-[#F5F5F0]/10 bg-[#090B09]/92 backdrop-blur-xl"
             : "border-b border-transparent bg-gradient-to-b from-[#090B09]/90 via-[#090B09]/40 to-transparent",
         )}
       >
         <div className="mx-auto flex h-18 max-w-7xl items-center justify-between gap-4 px-4 sm:h-20 sm:px-6 lg:px-8">
-          {/* Logo: FORGE / ATHLETICS */}
+          {/* Distinctive FORGE / ATHLETICS Wordmark */}
           <a
             href="#home"
             aria-label={`${siteConfig.brand.name} — Home`}
@@ -81,7 +110,7 @@ export function Navbar() {
                 className="h-8 w-8 object-contain"
               />
             ) : null}
-            <span className="font-display text-3xl tracking-[0.04em] italic text-[var(--brand-text)] uppercase">
+            <span className="font-display text-3xl tracking-[0.06em] italic text-[var(--brand-text)] uppercase transition-colors group-hover:text-white">
               {siteConfig.brand.wordmarkPrimary}
             </span>
             <span
@@ -90,7 +119,7 @@ export function Navbar() {
             >
               /
             </span>
-            <span className="text-[11px] font-medium tracking-[0.28em] text-[#F5F5F0]/80 uppercase">
+            <span className="text-[11px] font-semibold tracking-[0.3em] text-[#F5F5F0]/80 uppercase">
               {siteConfig.brand.wordmarkSecondary}
             </span>
           </a>
@@ -145,10 +174,11 @@ export function Navbar() {
         </div>
       </header>
 
-      {/* Mobile Full-Screen Navigation Overlay */}
+      {/* Mobile Full-Screen Navigation Overlay with Complete Focus Trap */}
       <AnimatePresence>
         {mobileOpen ? (
           <motion.div
+            ref={drawerRef}
             id="mobile-navigation-drawer"
             role="dialog"
             aria-modal="true"
@@ -163,7 +193,7 @@ export function Navbar() {
               <span className="font-display text-2xl tracking-[0.06em] italic text-[var(--brand-text)] uppercase">
                 {siteConfig.brand.wordmarkPrimary}{" "}
                 <span className="not-italic text-[var(--brand-accent)]">/</span>{" "}
-                <span className="not-italic text-sm tracking-[0.22em]">
+                <span className="not-italic text-xs tracking-[0.24em]">
                   {siteConfig.brand.wordmarkSecondary}
                 </span>
               </span>

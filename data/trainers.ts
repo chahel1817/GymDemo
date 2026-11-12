@@ -23,12 +23,12 @@ export const trainersData: TrainerProfile[] = [
     name: "Aarav Mehta",
     specialisation: "Barbell Strength & Hypertrophy",
     summary:
-      "Focuses on foundational compound lifts and progressive hypertrophy blocks for lifters at every stage.",
+      "Coaches foundational compound lifts and structured hypertrophy progressions.",
     isSampleProfile: true,
     image: {
-      src: "/images/pexels-rdne-8612491.jpg",
+      src: "/images/pexels-rdne-8612491.webp",
       alt: "Sample portrait of strength coach standing with crossed arms on the gym floor",
-      objectPosition: "50% 18%",
+      objectPosition: "50% 15%",
     },
   },
   {
@@ -36,12 +36,12 @@ export const trainersData: TrainerProfile[] = [
     name: "Vikram Desai",
     specialisation: "Movement & Biomechanics",
     summary:
-      "Coaches joint mobility, clean barbell technique, and sustainable strength for busy schedules.",
+      "Focuses on joint mobility, lifting efficiency, and sustainable strength.",
     isSampleProfile: true,
     image: {
-      src: "/images/pexels-silverkblack-39219663.jpg",
+      src: "/images/pexels-silverkblack-39219663.webp",
       alt: "Sample portrait of movement coach in front of steel power racks",
-      objectPosition: "50% 16%",
+      objectPosition: "50% 15%",
     },
   },
   {
@@ -49,12 +49,12 @@ export const trainersData: TrainerProfile[] = [
     name: "Kabir Shah",
     specialisation: "Metabolic Conditioning",
     summary:
-      "Designs high-output interval engines, turf circuits, and athletic stamina progressions.",
+      "Builds high-output interval engines and athletic stamina progressions.",
     isSampleProfile: true,
     image: {
-      src: "/images/pexels-thisisengineering-3912516.jpg",
+      src: "/images/pexels-thisisengineering-3912516.webp",
       alt: "Sample portrait of conditioning coach standing by boxing ring ropes",
-      objectPosition: "50% 18%",
+      objectPosition: "50% 15%",
     },
   },
 ];

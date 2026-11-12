@@ -10,7 +10,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { cn } from "@/lib/utils";
 
 export function Programs() {
-  const [showSecondary, setShowSecondary] = useState(true);
+  const [showSecondary, setShowSecondary] = useState(false);
   const { selectForEnquiry } = useEnquirySelection();
 
   const primaryPrograms = programsData.filter((p) => p.tier === "primary");
@@ -78,22 +78,25 @@ export function Programs() {
           ))}
         </div>
 
-        {/* Compact Secondary Specialised Disciplines Strip */}
-        <div className="mt-10 border-t border-[#F5F5F0]/10 pt-8">
-          <div className="flex items-center justify-between gap-4">
+        {/* Compact Secondary Specialised Disciplines (Collapsed by default) */}
+        <div className="mt-8 border-t border-[#F5F5F0]/10 pt-6">
+          <div className="flex flex-wrap items-center justify-between gap-4">
             <h3 className="font-mono text-xs tracking-[0.18em] text-[var(--brand-muted)] uppercase">
               {programsMeta.secondaryHeading} ({secondaryPrograms.length})
             </h3>
             <button
               type="button"
               aria-expanded={showSecondary}
+              aria-controls="secondary-program-tracks"
               onClick={() => setShowSecondary((prev) => !prev)}
-              className="inline-flex min-h-9 items-center gap-1.5 font-mono text-[11px] tracking-[0.14em] text-[var(--brand-text)] uppercase hover:text-[var(--brand-accent)] cursor-pointer"
+              className="inline-flex min-h-10 items-center gap-2 rounded-full border border-[#F5F5F0]/15 px-4 font-mono text-[11px] tracking-[0.12em] text-[var(--brand-text)] uppercase transition-colors hover:border-[var(--brand-accent)] hover:text-[var(--brand-accent)] cursor-pointer"
             >
-              <span>{showSecondary ? "COLLAPSE" : "VIEW TRACKS"}</span>
+              <span>
+                {showSecondary ? "HIDE ADDITIONAL TRACKS" : "VIEW ADDITIONAL TRACKS"}
+              </span>
               <ChevronDown
                 className={cn(
-                  "h-3.5 w-3.5 transition-transform",
+                  "h-3.5 w-3.5 transition-transform duration-200",
                   showSecondary && "rotate-180",
                 )}
                 aria-hidden="true"
@@ -102,7 +105,10 @@ export function Programs() {
           </div>
 
           {showSecondary ? (
-            <div className="mt-5 grid gap-4 md:grid-cols-3">
+            <div
+              id="secondary-program-tracks"
+              className="mt-5 grid gap-4 md:grid-cols-3"
+            >
               {secondaryPrograms.map((program) => (
                 <article
                   key={program.id}

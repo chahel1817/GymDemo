@@ -16,22 +16,28 @@ import { FAQ } from "@/components/sections/FAQ";
 import { Contact } from "@/components/sections/Contact";
 
 function StructuredData() {
-  const sportsClubSchema = {
-    "@context": "https://schema.org",
-    "@type": "SportsActivityLocation",
-    name: siteConfig.brand.name,
-    description: siteConfig.seo.description,
-    url: siteConfig.seo.siteUrl,
-    image: `${siteConfig.seo.siteUrl}${siteConfig.seo.ogImage}`,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: siteConfig.contact.address.line1,
-      addressLocality: siteConfig.contact.address.city,
-      addressRegion: siteConfig.contact.address.state,
-      addressCountry: "IN",
-    },
-    priceRange: "₹1,499 - ₹3,999 (Illustrative Demo Pricing)",
-  };
+  const canEmitBusinessSchema =
+    siteConfig.isVerifiedBusiness && !siteConfig.isDemo;
+
+  const sportsClubSchema = canEmitBusinessSchema
+    ? {
+        "@context": "https://schema.org",
+        "@type": "SportsActivityLocation",
+        name: siteConfig.brand.name,
+        description: siteConfig.seo.description,
+        url: siteConfig.seo.siteUrl,
+        image: `${siteConfig.seo.siteUrl}${siteConfig.seo.ogImage}`,
+        telephone: siteConfig.contact.displayPhone,
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: siteConfig.contact.address.line1,
+          addressLocality: siteConfig.contact.address.city,
+          addressRegion: siteConfig.contact.address.state,
+          postalCode: siteConfig.contact.address.postalCode,
+          addressCountry: "IN",
+        },
+      }
+    : null;
 
   const faqSchema = {
     "@context": "https://schema.org",
@@ -48,10 +54,12 @@ function StructuredData() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(sportsClubSchema) }}
-      />
+      {sportsClubSchema ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(sportsClubSchema) }}
+        />
+      ) : null}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}

@@ -6,7 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   AlertCircle,
   ArrowUpRight,
+  Check,
   CheckCircle2,
+  Copy,
   ExternalLink,
   Loader2,
   MessageSquare,
@@ -56,6 +58,7 @@ export function EnquiryForm() {
   const [submittedPayload, setSubmittedPayload] =
     useState<SubmittedPayloadState | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [copiedMessage, setCopiedMessage] = useState(false);
 
   const {
     register,
@@ -108,8 +111,10 @@ export function EnquiryForm() {
     if (isProcessing) return;
     setIsProcessing(true);
     setSubmissionError(null);
+    setCopiedMessage(false);
 
     try {
+      // Optional backend API integration when configured in data/site.ts
       if (siteConfig.contact.enquiryEndpoint) {
         const res = await fetch(siteConfig.contact.enquiryEndpoint, {
           method: "POST",
@@ -119,15 +124,21 @@ export function EnquiryForm() {
 
         if (!res.ok) {
           throw new Error(
-            `Submission endpoint responded with status ${res.status}.`,
+            `Enquiry endpoint returned status ${res.status}. Please try again.`,
           );
         }
       }
 
       const whatsapp = buildWhatsAppEnquiry(values);
+
+      if (whatsapp.validationError) {
+        throw new Error(whatsapp.validationError);
+      }
+
       let popupBlocked = false;
 
-      if (typeof window !== "undefined") {
+      // Only open wa.me externally when a verified non-placeholder number is configured
+      if (!whatsapp.isDemoPreview && whatsapp.url && typeof window !== "undefined") {
         const openedWindow = window.open(
           whatsapp.url,
           "_blank",
@@ -145,18 +156,29 @@ export function EnquiryForm() {
         atSelectionTimestamp: selection?.updatedAt ?? 0,
       });
 
-      toast.success("Enquiry prepared for WhatsApp", {
-        description: popupBlocked
-          ? "Click 'Open WhatsApp Message' below to send."
-          : "WhatsApp opened with your enquiry details.",
-      });
+      if (whatsapp.isDemoPreview) {
+        toast.info("Demo enquiry message prepared", {
+          description:
+            "Placeholder WhatsApp number active — message previewed locally without sending externally.",
+        });
+      } else if (popupBlocked) {
+        toast.success("Enquiry message prepared", {
+          description:
+            "Popup blocked — use 'Open WhatsApp Message' below to send your enquiry.",
+        });
+      } else {
+        toast.success("WhatsApp opened with your enquiry", {
+          description:
+            "Send the pre-filled message inside WhatsApp to complete your request.",
+        });
+      }
     } catch (error) {
       const errorMessage =
         error instanceof Error
           ? error.message
           : "Unable to process your enquiry right now. Please try again.";
       setSubmissionError(errorMessage);
-      toast.error("Enquiry could not be submitted", {
+      toast.error("Enquiry could not be prepared", {
         description: errorMessage,
       });
     } finally {
@@ -164,9 +186,23 @@ export function EnquiryForm() {
     }
   };
 
+  const handleCopyPreview = async () => {
+    if (!submittedPayload) return;
+    try {
+      await navigator.clipboard.writeText(
+        submittedPayload.whatsapp.formattedMessage,
+      );
+      setCopiedMessage(true);
+      toast.success("Enquiry message copied");
+    } catch {
+      toast.error("Could not copy automatically — please copy from the preview box.");
+    }
+  };
+
   const handleReset = () => {
     setSubmittedPayload(null);
     setSubmissionError(null);
+    setCopiedMessage(false);
     clearSelection();
     reset({
       fullName: "",
@@ -180,6 +216,9 @@ export function EnquiryForm() {
   };
 
   if (showSuccessPanel && submittedPayload) {
+    const isDemo = submittedPayload.whatsapp.isDemoPreview;
+    const waUrl = submittedPayload.whatsapp.url;
+
     return (
       <div
         className="border border-[var(--brand-accent)]/35 bg-[var(--brand-elevated)] p-6 sm:p-8"
@@ -193,24 +232,31 @@ export function EnquiryForm() {
           />
           <div>
             <p className="font-mono text-[11px] tracking-[0.18em] text-[var(--brand-accent)] uppercase">
-              WHATSAPP ENQUIRY READY
+              {isDemo
+                ? "DEMO ENQUIRY PREVIEW (NOT SENT)"
+                : submittedPayload.popupBlocked
+                  ? "WHATSAPP MESSAGE PREPARED"
+                  : "WHATSAPP OPENED WITH MESSAGE"}
             </p>
             <h3 className="mt-1 font-display text-3xl text-white uppercase">
               THANK YOU, {submittedPayload.applicantName}.
             </h3>
             <p className="mt-1.5 text-sm text-[var(--brand-muted)]">
-              {submittedPayload.popupBlocked
-                ? "Click below to launch WhatsApp with your enquiry details."
-                : "Your pre-filled WhatsApp enquiry opened in a new tab."}
+              {isDemo
+                ? "Your enquiry message is formatted below for demonstration. Because a placeholder WhatsApp number is configured, nothing was sent to a real gym."
+                : submittedPayload.popupBlocked
+                  ? "Your browser blocked automatic tab opening. Click below to open WhatsApp and send the prepared enquiry."
+                  : "WhatsApp opened in a new tab with your prepared details. Send the message inside WhatsApp so the club desk receives your request."}
             </p>
           </div>
         </div>
 
-        {submittedPayload.whatsapp.isPlaceholderNumber ? (
+        {isDemo ? (
           <p className="mt-4 border border-[#F5F5F0]/10 bg-[#090B09] px-3.5 py-2.5 text-xs text-[var(--brand-muted)]">
-            Demo number active (+{siteConfig.contact.whatsappNumber}). Update{" "}
-            <code className="font-mono text-[#F5F5F0]">whatsappNumber</code> in{" "}
-            <code className="font-mono text-[#F5F5F0]">data/site.ts</code>.
+            Demo mode active (<code className="font-mono text-[#F5F5F0]">whatsappIsPlaceholder: true</code>). Replace{" "}
+            <code className="font-mono text-[#F5F5F0]">whatsappNumber</code> and set{" "}
+            <code className="font-mono text-[#F5F5F0]">whatsappIsPlaceholder: false</code> in{" "}
+            <code className="font-mono text-[#F5F5F0]">data/site.ts</code> to enable live WhatsApp dispatch.
           </p>
         ) : null}
 
@@ -221,16 +267,36 @@ export function EnquiryForm() {
         </div>
 
         <div className="mt-6 flex flex-wrap items-center gap-3">
-          <a
-            href={submittedPayload.whatsapp.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[var(--brand-accent)] px-6 py-2.5 text-xs font-bold tracking-[0.08em] text-[var(--brand-accent-ink)] uppercase transition-colors hover:bg-[var(--brand-accent-hover)]"
-          >
-            <MessageSquare className="h-4 w-4" aria-hidden="true" />
-            <span>OPEN WHATSAPP MESSAGE</span>
-            <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-          </a>
+          {!isDemo && waUrl ? (
+            <a
+              href={waUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[var(--brand-accent)] px-6 py-2.5 text-xs font-bold tracking-[0.08em] text-[var(--brand-accent-ink)] uppercase transition-colors hover:bg-[var(--brand-accent-hover)]"
+            >
+              <MessageSquare className="h-4 w-4" aria-hidden="true" />
+              <span>OPEN WHATSAPP MESSAGE</span>
+              <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+            </a>
+          ) : (
+            <button
+              type="button"
+              onClick={handleCopyPreview}
+              className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[var(--brand-accent)] px-6 py-2.5 text-xs font-bold tracking-[0.08em] text-[var(--brand-accent-ink)] uppercase transition-colors hover:bg-[var(--brand-accent-hover)] cursor-pointer"
+            >
+              {copiedMessage ? (
+                <>
+                  <Check className="h-4 w-4" aria-hidden="true" />
+                  <span>COPIED PREVIEW</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="h-4 w-4" aria-hidden="true" />
+                  <span>COPY ENQUIRY TEXT</span>
+                </>
+              )}
+            </button>
+          )}
 
           <button
             type="button"
@@ -493,7 +559,9 @@ export function EnquiryForm() {
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <span className="text-xs text-[var(--brand-muted)]">
-          Direct WhatsApp enquiry · Demo placeholder number
+          {siteConfig.contact.whatsappIsPlaceholder
+            ? "Demo mode · Prepares enquiry preview locally"
+            : "Prepares a WhatsApp enquiry message"}
         </span>
 
         <button
@@ -508,7 +576,11 @@ export function EnquiryForm() {
             </>
           ) : (
             <>
-              <span>SEND VIA WHATSAPP</span>
+              <span>
+                {siteConfig.contact.whatsappIsPlaceholder
+                  ? "PREVIEW ENQUIRY"
+                  : "PREPARE WHATSAPP ENQUIRY"}
+              </span>
               <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
             </>
           )}

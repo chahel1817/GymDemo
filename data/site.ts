@@ -23,7 +23,13 @@ export interface SocialLink {
 }
 
 export interface SiteConfig {
+  /**
+   * Toggle between demo showcase mode and verified live gym production mode.
+   * LocalBusiness / SportsActivityLocation structured data and live WhatsApp sending
+   * only activate when `isDemo` is false AND `isVerifiedBusiness` is true.
+   */
   isDemo: boolean;
+  isVerifiedBusiness: boolean;
   brand: {
     name: string;
     shortName: string;
@@ -60,8 +66,7 @@ export interface SiteConfig {
     image: {
       src: string;
       alt: string;
-      objectPositionDesktop: string;
-      objectPositionMobile: string;
+      objectPositionClass: string;
     };
   };
   tickerItems: readonly string[];
@@ -111,8 +116,8 @@ export interface SiteConfig {
     heading: string;
     subheading: string;
     /**
-     * DEMO PLACEHOLDER WHATSAPP NUMBER
-     * Format: Country code + 10-digit number without '+' or spaces.
+     * Configure a verified WhatsApp number (`91XXXXXXXXXX`) and set
+     * `whatsappIsPlaceholder: false` to enable live wa.me handoff.
      */
     whatsappNumber: string;
     whatsappIsPlaceholder: boolean;
@@ -125,6 +130,7 @@ export interface SiteConfig {
       line2: string;
       city: string;
       state: string;
+      postalCode?: string;
       country: string;
       isPlaceholder: boolean;
       note: string;
@@ -149,12 +155,31 @@ export interface SiteConfig {
   };
 }
 
-const resolvedSiteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
-  "https://forge-athletics-demo.example.com";
+function resolveProductionSiteUrl(): string {
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (explicit) {
+    return explicit.replace(/\/+$/, "");
+  }
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    const prodUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL.replace(
+      /^https?:\/\//,
+      "",
+    ).replace(/\/+$/, "");
+    return `https://${prodUrl}`;
+  }
+  if (process.env.VERCEL_URL) {
+    const previewUrl = process.env.VERCEL_URL.replace(
+      /^https?:\/\//,
+      "",
+    ).replace(/\/+$/, "");
+    return `https://${previewUrl}`;
+  }
+  return "https://gym-demo-three-lilac.vercel.app";
+}
 
 export const siteConfig: SiteConfig = {
   isDemo: true,
+  isVerifiedBusiness: false,
   brand: {
     name: "FORGE ATHLETICS",
     shortName: "FORGE",
@@ -177,7 +202,7 @@ export const siteConfig: SiteConfig = {
     borderSubtle: "rgba(245, 245, 240, 0.10)",
   },
   seo: {
-    siteUrl: resolvedSiteUrl,
+    siteUrl: resolveProductionSiteUrl(),
     title: "FORGE ATHLETICS | Performance Strength & Conditioning Club — Ahmedabad",
     description:
       "Build strength and own your journey at FORGE ATHLETICS. Explore structured strength, conditioning, personal coaching, and demo memberships in Ahmedabad.",
@@ -188,7 +213,7 @@ export const siteConfig: SiteConfig = {
       "personal training Ahmedabad",
       "performance fitness club Gujarat",
     ],
-    ogImage: "/images/forge_athlete.png",
+    ogImage: "/images/forge_athlete.webp",
     locale: "en_IN",
   },
   navigation: {
@@ -212,10 +237,9 @@ export const siteConfig: SiteConfig = {
     secondaryCtaLabel: "Explore Programs",
     secondaryCtaHref: "#programs",
     image: {
-      src: "/images/forge_athlete.png",
+      src: "/images/forge_athlete.webp",
       alt: "Muscular athlete wearing a Forge tank top clapping chalk on hands beneath dramatic lime-green gym lighting",
-      objectPositionDesktop: "52% 14%",
-      objectPositionMobile: "50% 8%",
+      objectPositionClass: "object-[50%_10%] lg:object-[52%_14%]",
     },
   },
   tickerItems: [
@@ -230,12 +254,12 @@ export const siteConfig: SiteConfig = {
     headingLine1: "THE WORK",
     headingLine2: "CHANGES YOU.",
     paragraph:
-      "No shortcuts or crowded gimmicks. Just structured progression, calibrated iron, and focused coaching built to make discipline your daily standard.",
+      "No shortcuts. Structured progression, calibrated iron, and focused coaching built to make discipline your daily standard.",
     ctaLabel: "EXPLORE THE CLUB",
     ctaHref: "#experience",
     image: {
-      src: "/images/luke-witter-k47w6BeapCs-unsplash.jpg",
-      alt: "Athlete performing controlled dumbbell curl under warm directional lighting",
+      src: "/images/luke-witter-k47w6BeapCs-unsplash.webp",
+      alt: "Athlete performing controlled dumbbell work under warm directional gym lighting",
       objectPosition: "48% 22%",
     },
   },
@@ -245,21 +269,21 @@ export const siteConfig: SiteConfig = {
     differentiators: [
       {
         title: "Calibrated Iron & Turf",
-        detail: "Competition plates, open racks, and dedicated conditioning lanes.",
+        detail: "Competition plates and open sprint lanes.",
       },
       {
         title: "Coaching That Cues",
-        detail: "Hands-on mechanics guidance without crowded studio chaos.",
+        detail: "Mechanics guidance without studio chaos.",
       },
       {
         title: "Measured Progression",
-        detail: "Structured weekly blocks replacing random fatigue workouts.",
+        detail: "Structured blocks replacing random fatigue.",
       },
     ],
     ctaLabel: "BOOK A FREE TRIAL",
     ctaHref: "#contact",
     image: {
-      src: "/images/salman-sidheek-iW79tgCbiMs-unsplash.jpg",
+      src: "/images/salman-sidheek-iW79tgCbiMs-unsplash.webp",
       alt: "Minimalist dark architectural gym floor with linear overhead ceiling light",
       objectPosition: "50% 50%",
     },
@@ -272,7 +296,7 @@ export const siteConfig: SiteConfig = {
     ctaLabel: "BOOK YOUR FREE TRIAL",
     ctaHref: "#contact",
     image: {
-      src: "/images/marvin-meyer-VB5i6ZmXUoI-unsplash.jpg",
+      src: "/images/marvin-meyer-VB5i6ZmXUoI-unsplash.webp",
       alt: "Athletes silhouetted against industrial gym windows before a conditioning session",
       objectPosition: "50% 45%",
     },
@@ -281,20 +305,20 @@ export const siteConfig: SiteConfig = {
     eyebrow: "07 // FREE TRIAL",
     heading: "BOOK YOUR VISIT.",
     subheading:
-      "Reserve an introductory tour and trial session. Details send directly as a pre-filled WhatsApp enquiry.",
-    whatsappNumber: "910000000000", // DEMO PLACEHOLDER
+      "Prepare an introductory visit enquiry below. In demo mode, your formatted message is previewed without contacting an external phone line.",
+    whatsappNumber: "910000000000", // DEMO PLACEHOLDER — set a real 91XXXXXXXXXX number and whatsappIsPlaceholder: false for live launch
     whatsappIsPlaceholder: true,
-    displayPhone: "+91 00000 00000 (Demo)",
-    email: "hello@forgeathletics-demo.example",
+    displayPhone: "+91 00000 00000 (Demo Placeholder)",
+    email: "demo-placeholder@forge-club.local",
     address: {
       label: "LOCATION (DEMO PLACEHOLDER)",
-      line1: "Near Sindhu Bhavan Road / SG Highway",
+      line1: "Sample Club Area — Sindhu Bhavan Road / SG Highway",
       line2: "Bodakdev, Ahmedabad",
       city: "Ahmedabad",
       state: "Gujarat",
       country: "India",
       isPlaceholder: true,
-      note: "Sample Ahmedabad placeholder. Replace in data/site.ts.",
+      note: "Illustrative Ahmedabad placeholder. Replace in data/site.ts before production launch.",
     },
     openingHours: {
       weekdaysLabel: "Mon – Sat",
@@ -304,7 +328,7 @@ export const siteConfig: SiteConfig = {
       isPlaceholder: true,
     },
     googleMaps: {
-      label: "Open Google Maps (Demo Pin)",
+      label: "Open Google Maps (Ahmedabad Demo)",
       url: "https://www.google.com/maps/search/?api=1&query=Ahmedabad+Gujarat",
       isPlaceholder: true,
     },
@@ -331,6 +355,6 @@ export const siteConfig: SiteConfig = {
   ],
   footer: {
     copyrightHolder: "FORGE ATHLETICS",
-    demoNote: "White-label fitness demo — editable via data/site.ts.",
+    demoNote: "White-label demo showcase — configure all details in data/site.ts.",
   },
 };

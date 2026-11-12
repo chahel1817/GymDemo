@@ -19,6 +19,7 @@ export function Lightbox({
   onClose,
   onNavigate,
 }: LightboxProps) {
+  const dialogRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const prefersReducedMotion = useReducedMotion();
@@ -27,6 +28,18 @@ export function Lightbox({
     activeIndex !== null && activeIndex >= 0 && activeIndex < items.length;
   const current = isOpen ? items[activeIndex] : null;
 
+  // Keep latest callbacks & activeIndex in refs so keyboard listener never resets focus on slide change
+  const stateRef = useRef({ activeIndex, itemsLength: items.length, onClose, onNavigate });
+  useEffect(() => {
+    stateRef.current = {
+      activeIndex,
+      itemsLength: items.length,
+      onClose,
+      onNavigate,
+    };
+  }, [activeIndex, items.length, onClose, onNavigate]);
+
+  // Capture/restore focus & scroll lock strictly on open/close transitions
   useEffect(() => {
     if (!isOpen) return;
 
@@ -34,38 +47,74 @@ export function Lightbox({
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
-    window.setTimeout(() => {
+    const focusTimer = window.setTimeout(() => {
       closeButtonRef.current?.focus();
-    }, 10);
+    }, 20);
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      const { activeIndex: idx, itemsLength, onClose: closeFn, onNavigate: navFn } =
+        stateRef.current;
+
       if (e.key === "Escape") {
         e.preventDefault();
-        onClose();
-      } else if (e.key === "ArrowLeft" && activeIndex !== null) {
+        closeFn();
+        return;
+      }
+      if (e.key === "ArrowLeft" && idx !== null) {
         e.preventDefault();
-        onNavigate((activeIndex - 1 + items.length) % items.length);
-      } else if (e.key === "ArrowRight" && activeIndex !== null) {
+        navFn((idx - 1 + itemsLength) % itemsLength);
+        return;
+      }
+      if (e.key === "ArrowRight" && idx !== null) {
         e.preventDefault();
-        onNavigate((activeIndex + 1) % items.length);
+        navFn((idx + 1) % itemsLength);
+        return;
+      }
+      if (e.key === "Tab" && dialogRef.current) {
+        const focusable = Array.from(
+          dialogRef.current.querySelectorAll<HTMLElement>(
+            'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])',
+          ),
+        );
+        if (focusable.length === 0) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (!dialogRef.current.contains(document.activeElement)) {
+          e.preventDefault();
+          (e.shiftKey ? last : first).focus();
+          return;
+        }
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => {
+      window.clearTimeout(focusTimer);
       window.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = prevOverflow;
       previousFocusRef.current?.focus?.();
     };
-  }, [isOpen, activeIndex, items.length, onClose, onNavigate]);
+  }, [isOpen]);
 
   return (
     <AnimatePresence>
       {isOpen && current && activeIndex !== null ? (
         <motion.div
+          ref={dialogRef}
           role="dialog"
           aria-modal="true"
           aria-label={`Facility preview: ${current.title}`}
+          tabIndex={-1}
           initial={prefersReducedMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={prefersReducedMotion ? undefined : { opacity: 0 }}
@@ -149,7 +198,7 @@ export function Lightbox({
               </p>
             </div>
             <p className="font-mono text-[11px] tracking-[0.14em] text-[#F5F5F0]/50 uppercase">
-              ESC TO CLOSE · ← / →
+              ESC TO CLOSE · ← / → · TAB TO CYCLE
             </p>
           </div>
         </motion.div>

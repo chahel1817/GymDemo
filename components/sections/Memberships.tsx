@@ -86,7 +86,7 @@ export function Memberships() {
           />
         </Reveal>
 
-        <div className="mt-10 grid divide-y divide-[#F5F5F0]/10 border border-[#F5F5F0]/10 lg:grid-cols-3 lg:divide-x lg:divide-y-0">
+        <div className="mt-10 grid items-stretch divide-y divide-[#F5F5F0]/10 border border-[#F5F5F0]/10 lg:grid-cols-3 lg:divide-x lg:divide-y-0">
           {membershipsData.map((plan) => {
             const activePricing = plan.pricing[durationId];
             const isRecommended = Boolean(plan.recommended);
@@ -95,9 +95,9 @@ export function Memberships() {
               <article
                 key={plan.id}
                 className={cn(
-                  "flex flex-col justify-between p-6 sm:p-8 lg:p-9",
+                  "flex h-full flex-col justify-between p-6 sm:p-8 lg:p-9",
                   isRecommended
-                    ? "border-t-2 border-t-[var(--brand-accent)] bg-[var(--brand-elevated)]"
+                    ? "border-t-2 border-t-[var(--brand-accent)] bg-[#141914] ring-1 ring-inset ring-[var(--brand-accent)]/20"
                     : "bg-[var(--brand-bg)]",
                 )}
               >
@@ -107,7 +107,7 @@ export function Memberships() {
                       {plan.code}
                     </span>
                     {isRecommended ? (
-                      <span className="rounded-full bg-[var(--brand-accent)]/15 px-3 py-0.5 font-mono text-[10px] font-semibold tracking-[0.14em] text-[var(--brand-accent)] uppercase">
+                      <span className="rounded-full bg-[var(--brand-accent)] px-3 py-0.5 font-mono text-[10px] font-bold tracking-[0.12em] text-[var(--brand-accent-ink)] uppercase">
                         RECOMMENDED
                       </span>
                     ) : (
@@ -120,7 +120,7 @@ export function Memberships() {
                   <h3 className="mt-4 font-display text-4xl text-[var(--brand-text)] uppercase">
                     {plan.name}
                   </h3>
-                  <p className="mt-1 text-sm text-[var(--brand-muted)]">
+                  <p className="mt-1 min-h-[2.75rem] text-sm text-[var(--brand-muted)]">
                     {plan.tagline}
                   </p>
 
@@ -164,7 +164,7 @@ export function Memberships() {
                   </ul>
                 </div>
 
-                <div className="mt-8">
+                <div className="mt-8 pt-2">
                   <button
                     type="button"
                     onClick={() => handlePlanEnquiry(plan)}
